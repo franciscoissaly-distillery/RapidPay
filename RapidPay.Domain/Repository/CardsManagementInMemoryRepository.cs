@@ -9,39 +9,42 @@ namespace RapidPay.Domain.Repository
         private readonly ConcurrentDictionary<string, Card> _cards = new();
         private readonly ConcurrentDictionary<Card, ConcurrentBag<CardTransaction>> _transactions = new();
 
-        public IEnumerable<Card> GetAllCards()
+        async public Task<IEnumerable<Card>> GetAllCards()
         {
-            return _cards.Values;
+            return await Task.FromResult<IEnumerable<Card>>(_cards.Values);
         }
 
-        public Card GetCardByNumber(string cardNumber)
+        async public Task<Card> GetCardByNumber(string cardNumber)
         {
+            Card result = null;
             if (!string.IsNullOrWhiteSpace(cardNumber)
                 && _cards.TryGetValue(cardNumber, out var card))
-                return card;
-            else
-                return null;
+                result= card;
+            return await Task.FromResult(result);
         }
 
-        public CardTransaction GetCardLastTransaction(Card existingCard, DateTime? asOfDate = default)
+        async public Task<CardTransaction> GetCardLastTransaction(Card existingCard, DateTime? asOfDate = default)
         {
-            return OnGetAllCardTransactions(existingCard, asOfDate, 1).FirstOrDefault();
+            var cardTransactions = await OnGetAllCardTransactions(existingCard, asOfDate, 1);
+            return cardTransactions.FirstOrDefault();
         }
 
-        public IEnumerable<CardTransaction> GetAllCardTransactions(Card existingCard, DateTime? asOfDate = default)
+        async public Task<IEnumerable<CardTransaction>> GetAllCardTransactions(Card existingCard, DateTime? asOfDate = default)
         { 
-            return OnGetAllCardTransactions(existingCard,asOfDate);
+            return await OnGetAllCardTransactions(existingCard,asOfDate);
         }
 
-        private IEnumerable<CardTransaction> OnGetAllCardTransactions(Card existingCard, DateTime? asOfDate = default, int? resultsLimit = default)
+        async private Task<IEnumerable<CardTransaction>> OnGetAllCardTransactions(Card existingCard, DateTime? asOfDate = default, int? resultsLimit = default)
         {
+            IEnumerable<CardTransaction> transactions = null;
+
             if (asOfDate.GetValueOrDefault() == default)
                 asOfDate = DateTime.Now;
 
             if (existingCard != null
                 && _transactions.TryGetValue(existingCard, out var existingTransactions))
             {
-                IEnumerable<CardTransaction> transactions = (from eachTransaction in existingTransactions
+                transactions = (from eachTransaction in existingTransactions
                                                              where eachTransaction.TransactionDate < asOfDate
                                                              orderby eachTransaction.TransactionDate descending
                                                              select eachTransaction);
@@ -52,31 +55,38 @@ namespace RapidPay.Domain.Repository
                 return transactions;
             }
             else
-                return new List<CardTransaction>();
+                transactions=new List<CardTransaction>();
+
+            return await Task.FromResult(transactions);
         }
 
 
-        public bool SaveCard(Card card)
+        async public Task<bool> SaveCard(Card card)
         {
-            if (card == null)
-                return false;
-
+            bool success = false;
+            if (card != null)
+            {
             var savedCard = _cards.AddOrUpdate(card.Number, card, (cardNumber, existingCard) => card);
-            return savedCard != null;
+                success = (savedCard != null);
+            }
+            return await Task.FromResult(success);
         }
 
-        public bool SaveTransaction(CardTransaction transaction)
+        async public Task<bool> SaveTransaction(CardTransaction transaction)
         {
-            if (transaction == null)
-                return false;
+            bool success = false;
 
-            var existingCard = GetCardByNumber(transaction.Card.Number);
-            if (existingCard == null)
-                return false;
-
-            var existingTransactions = _transactions.GetOrAdd(existingCard, new ConcurrentBag<CardTransaction>());
-            existingTransactions.Add(transaction);
-            return true;
+            if (transaction != null)
+            {
+                var existingCard = await GetCardByNumber(transaction.Card.Number);
+                if (existingCard != null)
+                {
+                    var existingTransactions = _transactions.GetOrAdd(existingCard, new ConcurrentBag<CardTransaction>());
+                    existingTransactions.Add(transaction);
+                    success = true;
+                }
+            }
+            return await Task.FromResult(success);
         }
     }
 }

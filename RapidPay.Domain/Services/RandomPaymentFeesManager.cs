@@ -30,20 +30,23 @@ namespace RapidPay.Domain.Services
         private decimal _lastFeeAmount;
 
 
-        public decimal CalculatePaymentFee(CardTransaction payment)
+        public async Task<decimal> CalculatePaymentFee(CardTransaction payment)
             // current implementation ignores the received payment, but any more realistic implementation
             // would most probably require data contextual to the payment, at least the payment's amount
         {
             if (payment == null)
                 return 0;
 
-            lock (this)
+            return await Task.Run(() =>
             {
-                decimal feeFactor = GetCurrentFeeFactor();
-                decimal newFee = feeFactor * _lastFeeAmount;
-                _lastFeeAmount = newFee;
-                return newFee;
-            }
+                lock (this)
+                {
+                    decimal feeFactor = GetCurrentFeeFactor();
+                    decimal newFee = feeFactor * _lastFeeAmount;
+                    _lastFeeAmount = newFee;
+                    return newFee;
+                }
+            });
         }
 
         private decimal GetCurrentFeeFactor()

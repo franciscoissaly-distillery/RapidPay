@@ -24,9 +24,9 @@ namespace RapidPay.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var existingCards = _cardsManager.GetAllExistingCards();
+            var existingCards = await _cardsManager.GetAllExistingCards();
             if (!existingCards.Any())
                 return NoContent();
 
@@ -36,9 +36,9 @@ namespace RapidPay.Api.Controllers
 
 
         [HttpGet("{cardNumber}")]
-        public IActionResult GetCardByNumber(string cardNumber)
+        public async Task<IActionResult> GetCardByNumber(string cardNumber)
         {
-            var existingCard = _cardsManager.GetCard(cardNumber);
+            var existingCard = await _cardsManager.GetCard(cardNumber);
             if (existingCard == null)
                 return NotFound();
 
@@ -48,25 +48,25 @@ namespace RapidPay.Api.Controllers
 
 
         [HttpPost]
-        public IActionResult Post([FromBody] CreateCardRequest request)
+        public async Task<IActionResult> Post([FromBody] CreateCardRequest request)
         {
-            Card newCard = _cardsManager.CreateCard(request.CardNumber);
+            Card newCard = await _cardsManager.CreateCard(request.CardNumber);
             var url = new Uri($"{this.Request.Path.ToUriComponent()}/{newCard.Number}", UriKind.Relative);
             var dto = _mapper.MapToModel(newCard);
             return Created(url, dto);
         }
 
         [HttpGet("{cardNumber}/balance")]
-        public IActionResult GetCardBalance(string cardNumber)
+        public async Task<IActionResult> GetCardBalance(string cardNumber)
         {
-            var balance = _cardsManager.GetCardBalance(cardNumber);
+            var balance = await _cardsManager.GetCardBalance(cardNumber);
             return Ok(balance);
         }
 
         [HttpGet("{cardNumber}/transactions")]
-        public IActionResult GetCardTransactions(string cardNumber)
+        public async Task<IActionResult> GetCardTransactions(string cardNumber)
         {
-            var existingTransactions = _cardsManager.GetCardTransactions(cardNumber);
+            var existingTransactions = await _cardsManager.GetCardTransactions(cardNumber);
             if (!existingTransactions.Any())
                 return NoContent();
 
@@ -76,9 +76,9 @@ namespace RapidPay.Api.Controllers
 
 
         [HttpPost("{cardNumber}/payments")]
-        public IActionResult RegisterCardPayment(string cardNumber, [FromBody] CardPaymentRequest request)
+        public async Task<IActionResult> RegisterCardPayment(string cardNumber, [FromBody] CardPaymentRequest request)
         {
-            var newPayment = _cardsManager.RegisterCardPayment(cardNumber, request.Amount);
+            var newPayment = await _cardsManager.RegisterCardPayment(cardNumber, request.Amount);
             var dto = _mapper.MapToModel(newPayment);
             return Ok(dto);
         }

@@ -4,6 +4,6 @@ namespace RapidPay.Domain.Services
 {
     public interface IPaymentFeesManager
     {
-        decimal CalculatePaymentFee(CardTransaction payment);
+        Task<decimal> CalculatePaymentFee(CardTransaction payment);
     }
 }

@@ -5,12 +5,12 @@ namespace RapidPay.Domain.Repository
 {
     public interface ICardsManagementRepository
     {
-        Card GetCardByNumber(string cardNumber);
-        bool SaveCard(Card card);
-        CardTransaction GetCardLastTransaction(Card existingCard, DateTime? asOfDate = default);
-        bool SaveTransaction(CardTransaction transaction);
+        Task<Card> GetCardByNumber(string cardNumber);
+        Task<bool> SaveCard(Card card);
+        Task<CardTransaction> GetCardLastTransaction(Card existingCard, DateTime? asOfDate = default);
+        Task<bool> SaveTransaction(CardTransaction transaction);
 
-        IEnumerable<Card> GetAllCards();
-        IEnumerable<CardTransaction> GetAllCardTransactions(Card existingCard, DateTime? asOfDate = default);
+        Task<IEnumerable<Card>> GetAllCards();
+        Task<IEnumerable<CardTransaction>> GetAllCardTransactions(Card existingCard, DateTime? asOfDate = default);
     }
 }
