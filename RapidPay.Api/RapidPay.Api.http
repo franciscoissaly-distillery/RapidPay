@@ -1,0 +1,6 @@
+@RapidPay.Api_HostAddress = http://localhost:5200
+
+GET {{RapidPay.Api_HostAddress}}/api/*
+Accept: application/json
+
+###

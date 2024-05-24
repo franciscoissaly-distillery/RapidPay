@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34916.146
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidPay.Api", "RapidPay.Api\RapidPay.Api.csproj", "{99FE6038-FA91-4FCC-9B66-F2BEABAA5043}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidPay.Domain", "RapidPay.Domain\RapidPay.Domain.csproj", "{1880D120-FB21-467B-8CA2-152F7B9CCCC6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{99FE6038-FA91-4FCC-9B66-F2BEABAA5043}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99FE6038-FA91-4FCC-9B66-F2BEABAA5043}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99FE6038-FA91-4FCC-9B66-F2BEABAA5043}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99FE6038-FA91-4FCC-9B66-F2BEABAA5043}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1880D120-FB21-467B-8CA2-152F7B9CCCC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1880D120-FB21-467B-8CA2-152F7B9CCCC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1880D120-FB21-467B-8CA2-152F7B9CCCC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1880D120-FB21-467B-8CA2-152F7B9CCCC6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9F316863-EDE2-4B74-AC39-DB1F5861E648}
+	EndGlobalSection
+EndGlobal
