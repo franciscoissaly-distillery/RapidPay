@@ -1,6 +1,10 @@
-﻿using RapidPay.Domain.Entities;
+﻿using RapidPay.Domain.Adapters;
+using RapidPay.Domain.Entities;
 using RapidPay.Domain.Exceptions;
 using RapidPay.Domain.Repository;
+using System.Diagnostics;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Text.RegularExpressions;
 
 namespace RapidPay.Domain.Services
@@ -8,10 +12,10 @@ namespace RapidPay.Domain.Services
     public class CardsManager : ICardsManager
     {
         private readonly ICardsManagementRepository _repository;
-        private readonly IPaymentFeesManager _paymentFeesManager;
+        private readonly IPaymentFeesAdapter _paymentFeesManager;
 
 
-        public CardsManager(ICardsManagementRepository repository, IPaymentFeesManager paymentFeesManager)
+        public CardsManager(ICardsManagementRepository repository, IPaymentFeesAdapter paymentFeesManager)
         {
             ArgumentNullException.ThrowIfNull(repository);
             _repository = repository;

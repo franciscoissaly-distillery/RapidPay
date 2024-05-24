@@ -1,8 +1,9 @@
-﻿using RapidPay.Domain.Entities;
+﻿using RapidPay.Domain.Adapters;
+using RapidPay.Domain.Entities;
 
-namespace RapidPay.Domain.Services
+namespace RapidPay.Fees.Mocks
 {
-    public class RandomPaymentFeesManager : IPaymentFeesManager
+    public class RandomPaymentFeesManager : IPaymentFeesAdapter
     {
 
         // Singleton,
@@ -10,7 +11,7 @@ namespace RapidPay.Domain.Services
         // and may be administered as a singleton by the DI injector;
         // nontheless, still a explicit part of the requirement
         private static RandomPaymentFeesManager _instance;
-        public static RandomPaymentFeesManager Instance 
+        public static RandomPaymentFeesManager Instance
         {
             get
             {
@@ -31,8 +32,8 @@ namespace RapidPay.Domain.Services
 
 
         public async Task<decimal> CalculatePaymentFee(CardTransaction payment)
-            // current implementation ignores the received payment, but any more realistic implementation
-            // would most probably require data contextual to the payment, at least the payment's amount
+        // current implementation ignores the received payment, but any more realistic implementation
+        // would most probably require data contextual to the payment, at least the payment's amount
         {
             if (payment == null)
                 return 0;

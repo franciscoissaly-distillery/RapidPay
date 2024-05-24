@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using RapidPay.Domain.Services;
+using RapidPay.Domain.Adapters;
 using System;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -13,14 +13,14 @@ namespace RapidPay.Api.Filters
 {
     public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
-        private IUsersManager _usersManager;
+        private IUsersAdapter _usersManager;
 
         public BasicAuthenticationHandler(
             IOptionsMonitor<AuthenticationSchemeOptions> options,
             ILoggerFactory logger,
             UrlEncoder encoder,
             ISystemClock clock,
-            IUsersManager usersManager) : base(options, logger, encoder, clock)
+            IUsersAdapter usersManager) : base(options, logger, encoder, clock)
         {
             ArgumentNullException.ThrowIfNull(usersManager);
             _usersManager = usersManager;

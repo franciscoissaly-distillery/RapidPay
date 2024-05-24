@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>cd565e56-0129-4524-a2ee-4d6cda1bfd49</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,7 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RapidPay.Auth\RapidPay.Users.csproj" />
+    <ProjectReference Include="..\RapidPay.DataAccess\RapidPay.DataAccess.csproj" />
     <ProjectReference Include="..\RapidPay.Domain\RapidPay.Domain.csproj" />
+    <ProjectReference Include="..\RapidPay.Fees\RapidPay.FeesManagement.csproj" />
   </ItemGroup>
 
 </Project>

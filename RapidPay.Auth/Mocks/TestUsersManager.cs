@@ -1,6 +1,8 @@
-﻿namespace RapidPay.Domain.Services
+﻿using RapidPay.Domain.Adapters;
+
+namespace RapidPay.Auth.Mocks
 {
-    public class TestUsersManager : IUsersManager
+    public class TestUsersManager : IUsersAdapter
     {
         public bool IsValidUser(string username, string password)
         {

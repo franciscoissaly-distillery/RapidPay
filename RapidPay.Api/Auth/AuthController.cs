@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RapidPay.Domain.Services;
+using RapidPay.Domain.Adapters;
 
 namespace RapidPay.Api.Auth
 {
@@ -8,9 +8,9 @@ namespace RapidPay.Api.Auth
     public class AuthController : ControllerBase
     {
         private readonly IJwtTokenService _jwtTokenService;
-        private readonly IUsersManager _usersManager;
+        private readonly IUsersAdapter _usersManager;
 
-        public AuthController(IJwtTokenService jwtTokenService, IUsersManager usersManager)
+        public AuthController(IJwtTokenService jwtTokenService, IUsersAdapter usersManager)
         {
             _jwtTokenService = jwtTokenService;
             _usersManager = usersManager;

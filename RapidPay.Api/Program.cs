@@ -7,8 +7,12 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RapidPay.Api.Auth;
 using RapidPay.Api.Filters;
+using RapidPay.Auth.Mocks;
+using RapidPay.DataAccess.Mocks;
+using RapidPay.Domain.Adapters;
 using RapidPay.Domain.Repository;
 using RapidPay.Domain.Services;
+using RapidPay.Fees.Mocks;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,8 +20,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services
     .AddSingleton<ICardsManagementRepository>(new CardsManagementInMemoryRepository())
-    .AddSingleton<IPaymentFeesManager>(RandomPaymentFeesManager.Instance)
-    .AddSingleton<IUsersManager>(new TestUsersManager())
+    .AddSingleton<IPaymentFeesAdapter>(RandomPaymentFeesManager.Instance)
+    .AddSingleton<IUsersAdapter>(new TestUsersManager())
     .AddTransient<ICardsManager, CardsManager>();
 
 
