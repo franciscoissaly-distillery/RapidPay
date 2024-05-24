@@ -1,4 +1,4 @@
-﻿namespace RapidPay.Api.Filters
+﻿namespace RapidPay.Domain.Services
 {
     public interface IUsersManager
     {

@@ -20,6 +20,7 @@ namespace RapidPay.Api.Filters
             if (context.Exception is CardsManagementException exception)
             {
                 context.Result = new BadRequestObjectResult(exception.GetMessage());
+                context.ExceptionHandled = true;
             }
             else
             {
@@ -27,7 +28,6 @@ namespace RapidPay.Api.Filters
                 _logger.LogError(context.Exception, objectResult.Value.ToString());
                 context.Result = objectResult;
             }
-            context.ExceptionHandled = true;
         }
     }
 }

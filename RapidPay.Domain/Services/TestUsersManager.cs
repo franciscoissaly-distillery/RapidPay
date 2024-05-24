@@ -1,4 +1,4 @@
-﻿namespace RapidPay.Api.Filters
+﻿namespace RapidPay.Domain.Services
 {
     public class TestUsersManager : IUsersManager
     {
@@ -7,5 +7,4 @@
             return username == "testuser" && password == "testpassword";
         }
     }
-
 }
