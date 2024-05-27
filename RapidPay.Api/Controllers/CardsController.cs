@@ -48,12 +48,12 @@ namespace RapidPay.Api.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreateCardRequest request)
+        public async Task<IActionResult> CreateCard([FromBody] CreateCardRequest request)
         {
             Card newCard = await _cardsManager.CreateCard(request.CardNumber);
             var url = new Uri($"{this.Request.Path.ToUriComponent()}/{newCard.Number}", UriKind.Relative);
             var dto = _mapper.MapToModel(newCard);
-            return Created(url, dto);
+            return CreatedAtAction(nameof(CreateCard), new { cardNumber = newCard.Number }, dto);
         }
 
         [HttpGet("{cardNumber}/balance")]
