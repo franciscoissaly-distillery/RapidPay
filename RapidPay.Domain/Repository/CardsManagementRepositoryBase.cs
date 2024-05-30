@@ -16,7 +16,7 @@ namespace RapidPay.Domain.Repository
             _defaultEntities = defaultEntities;
         }
 
-        protected bool IsInitialized { get; private set; }
+        protected virtual bool IsInitialized { get; set; }
         protected void Initialize()
         {
             if (IsInitialized)
@@ -24,6 +24,9 @@ namespace RapidPay.Domain.Repository
 
             lock (this)
             {
+                if (IsInitialized)
+                    return;
+
                 OnInitializeTransactionTypes(_defaultEntities.CardTransactionTypes);
                 IsInitialized = true;
             }

@@ -52,8 +52,8 @@ namespace RapidPay.DataAccess.Sql
                 entity.ToTable("Cards");
                 entity.HasKey(x => x.Number);
                 entity.Property(x => x.Number)
-                    .HasMaxLength(15)
-                    .IsFixedLength();
+                      .HasMaxLength(15)
+                      .IsFixedLength();
             });
 
 
@@ -63,27 +63,30 @@ namespace RapidPay.DataAccess.Sql
                 entity.HasKey(x => x.Id);
 
                 entity.Property(x => x.TransactionDate)
-                    .HasDefaultValueSql("GetUtcDate()");
+                      .HasDefaultValueSql("GetUtcDate()");
 
                 entity.Property(x => x.TransactionAmount)
-                    .HasPrecision(17, 4)
-                    .HasDefaultValue(0);
+                      .HasPrecision(17, 4)
+                      .HasDefaultValue(0);
 
                 entity.Property(x => x.FeeAmount)
-                .HasDefaultValue(0)
-                .HasPrecision(17, 4);
+                      .HasDefaultValue(0)
+                      .HasPrecision(17, 4);
 
                 entity.Property(x => x.CardBalanceAmount)
-                    .HasDefaultValue(0)
-                    .HasPrecision(17,4);
+                      .HasDefaultValue(0)
+                      .HasPrecision(17,4);
 
                 entity.HasOne(x => x.TransactionType).WithMany()
-                    .HasForeignKey("TypeSystemCode")
-                    .HasPrincipalKey(transactionType => transactionType.SystemCode);
+                      .HasForeignKey("TypeSystemCode")
+                      .HasPrincipalKey(transactionType => transactionType.SystemCode);
 
                 entity.HasOne(x => x.Card).WithMany()
-                    .HasForeignKey(x => x.CardNumber)
-                    .HasPrincipalKey(card => card.Number);
+                      .HasForeignKey(x => x.CardNumber)
+                      .HasPrincipalKey(card => card.Number);
+
+                entity.Navigation(x => x.TransactionType)
+                      .AutoInclude();
             });
         }
     }

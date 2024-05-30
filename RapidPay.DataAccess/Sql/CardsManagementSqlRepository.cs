@@ -22,6 +22,19 @@ namespace RapidPay.DataAccess.Sql
             _db = db;
         }
 
+        private static bool _hasEverBeenInitialized; // to avoid initilization per new instance 
+        protected override bool IsInitialized
+        {
+            get
+            {
+                return  _hasEverBeenInitialized || base.IsInitialized;
+            }
+            set
+            {
+                _hasEverBeenInitialized = value;
+                base.IsInitialized = value;
+            }
+        }
 
         protected override IQueryable<TEntity> OnGetQueryable<TEntity>()
         {
