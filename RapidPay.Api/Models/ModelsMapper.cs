@@ -31,7 +31,7 @@ namespace RapidPay.Api.Models
             return new TransactionDto()
             {
                 CardNumber=transaction.Card.Number,
-                TypeCode = transaction.TransactionType.SystemCode.ToString(),
+                TypeCode = transaction.TransactionType.SystemCode,
                 TypeName = transaction.TransactionType.Name,
                 Date = transaction.TransactionDate,
                 Amount = transaction.TransactionAmount,

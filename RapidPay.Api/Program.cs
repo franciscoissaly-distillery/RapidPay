@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -9,17 +10,32 @@ using RapidPay.Api.Auth;
 using RapidPay.Api.Filters;
 using RapidPay.Auth.Mocks;
 using RapidPay.DataAccess.Mocks;
+using RapidPay.DataAccess.Sql;
 using RapidPay.Domain.Adapters;
 using RapidPay.Domain.Repository;
 using RapidPay.Domain.Services;
 using RapidPay.Fees.Mocks;
+using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDbContext<CardsManagementDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("RapidPay"), options =>
+    {
+        var asmName = Assembly.GetExecutingAssembly().FullName;
+        options.MigrationsAssembly(asmName);
+    });
+    options.EnableSensitiveDataLogging(); // Enable parameter value logging
+    options.LogTo(Console.WriteLine, LogLevel.Information); // Log SQL to the console
+});
+
 // Add services to the container.
 builder.Services
-    .AddSingleton<ICardsManagementRepository>(new CardsManagementInMemoryRepository())
+    .AddSingleton<DefaultEntities>()
+    //.AddSingleton<ICardsManagementRepository, CardsManagementInMemoryRepository>()
+    .AddScoped<ICardsManagementRepository, CardsManagementSqlRepository>()
     .AddSingleton<IPaymentFeesAdapter>(RandomPaymentFeesManager.Instance)
     .AddSingleton<IUsersAdapter>(new TestUsersManager())
     .AddTransient<ICardsManager, CardsManager>();

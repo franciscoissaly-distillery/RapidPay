@@ -2,14 +2,29 @@
 {
     public class CardTransaction
     {
+
         public CardTransaction(Card card)
         {
-            if (card == null)
-                throw new ArgumentNullException(nameof(card));
+            ArgumentNullException.ThrowIfNull(card);
             Card = card;
         }
 
+        #region "for db mapping purposes"
+
+        protected CardTransaction(string cardNumber)
+        {
+            ArgumentNullException.ThrowIfNull(cardNumber);
+            _cardNumber = cardNumber;
+        }
+        private string _cardNumber;
+        public string CardNumber => Card != null ? Card.Number : _cardNumber;
+
+        #endregion
+
+
         public Card Card { get; init; }
+
+        public Guid Id { get; set; }
 
         public CardTransactionType TransactionType { get; set; }
         public DateTime TransactionDate { get; set; }

@@ -11,9 +11,12 @@ namespace RapidPay.Api.Filters
     {
         private readonly ILogger<ExceptionsFilter> _logger;
 
-        public ExceptionsFilter(ILogger<ExceptionsFilter> logger)
+        private readonly IWebHostEnvironment _env;
+
+        public ExceptionsFilter(ILogger<ExceptionsFilter> logger, IWebHostEnvironment env)
         {
             _logger = logger;
+            _env = env;
         }
         public void OnException(ExceptionContext context)
         {
@@ -22,7 +25,7 @@ namespace RapidPay.Api.Filters
                 context.Result = new BadRequestObjectResult(exception.GetMessage());
                 context.ExceptionHandled = true;
             }
-            else
+            else if (_env.IsDevelopment())
             {
                 var objectResult = new ObjectResult("An unhandled exception occurred.") { StatusCode = (int) HttpStatusCode.InternalServerError };
                 _logger.LogError(context.Exception, objectResult.Value.ToString());
