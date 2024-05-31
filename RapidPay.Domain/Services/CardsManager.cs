@@ -32,12 +32,7 @@ namespace RapidPay.Domain.Services
         private async Task<decimal> OnGetCardBalance(Card existingCard, DateTime? asOfDate = default)
         {
             ArgumentNullException.ThrowIfNull(existingCard);
-
-            CardTransaction lastTransaction = await _repository.GetCardLastTransaction(existingCard, asOfDate);
-            if (lastTransaction == null)
-                return 0;
-
-            return lastTransaction.CardBalanceAmount;
+            return await _repository.GetCardBalanceFromLastTransaction(existingCard, asOfDate);
         }
 
         public async Task<Card> GetCard(string cardNumber)
@@ -62,7 +57,7 @@ namespace RapidPay.Domain.Services
                     ValueText = cardNumber
                 };
 
-            return await _repository.GetCardByNumber(cardNumber);
+            return await _repository.GetCard(cardNumber);
         }
 
         public bool IsValidCardNumber(string cardNumber)

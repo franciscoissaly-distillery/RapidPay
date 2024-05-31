@@ -8,6 +8,6 @@
             Number = number;
         }
 
-        public string Number { get; init; }
+        public string Number { get;}
     }
 }

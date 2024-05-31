@@ -16,7 +16,7 @@ namespace RapidPay.DataAccess.Sql
         private readonly ILogger<CardsManagementDbContext> _logger;
         private readonly DefaultEntities _defaultEntities;
 
-        public CardsManagementDbContext(DbContextOptions<CardsManagementDbContext> options, 
+        public CardsManagementDbContext(DbContextOptions<CardsManagementDbContext> options,
             ILogger<CardsManagementDbContext> logger,
             DefaultEntities defaultEntities)
             : base(options)
@@ -75,15 +75,15 @@ namespace RapidPay.DataAccess.Sql
 
                 entity.Property(x => x.CardBalanceAmount)
                       .HasDefaultValue(0)
-                      .HasPrecision(17,4);
-
-                entity.HasOne(x => x.TransactionType).WithMany()
-                      .HasForeignKey("TypeSystemCode")
-                      .HasPrincipalKey(transactionType => transactionType.SystemCode);
+                      .HasPrecision(17, 4);
 
                 entity.HasOne(x => x.Card).WithMany()
                       .HasForeignKey(x => x.CardNumber)
                       .HasPrincipalKey(card => card.Number);
+
+                entity.HasOne(x => x.TransactionType).WithMany()
+                      .HasForeignKey("TypeSystemCode")
+                      .HasPrincipalKey(transactionType => transactionType.SystemCode);
 
                 entity.Navigation(x => x.TransactionType)
                       .AutoInclude();

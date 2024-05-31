@@ -22,7 +22,7 @@
         #endregion
 
 
-        public Card Card { get; init; }
+        public Card Card { get; }
 
         public Guid Id { get; set; }
 

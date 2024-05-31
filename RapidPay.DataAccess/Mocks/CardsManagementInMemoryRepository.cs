@@ -15,21 +15,23 @@ namespace RapidPay.DataAccess.Mocks
 
         private readonly ConcurrentDictionary<Type, ConcurrentBag<object>> _entities = new();
 
+        protected override IQueryable<TEntity> OnGetQueryable<TEntity>()
+        {
+            return GetBag(typeof(TEntity)).OfType<TEntity>().AsQueryable();
+        }
+
         private ConcurrentBag<object> GetBag(Type entityType)
         {
             ArgumentNullException.ThrowIfNull(entityType);
             return _entities.GetOrAdd(entityType, x => new ConcurrentBag<object>());
         }
 
-        protected override IQueryable<TEntity> OnGetQueryable<TEntity>()
+        protected override int OnSaveAndReturnSavedCount<TEntity>(IEnumerable<TEntity> entities)
         {
-            return GetBag(typeof(TEntity)).OfType<TEntity>().AsQueryable();
-        }
-
-        protected override int OnSaveAndReturnSavedCount<TEntity>(TEntity entity)
-        {
-            GetBag(typeof(TEntity)).Add(entity);
-            return 1;
+            foreach (var entity in entities)
+                GetBag(typeof(TEntity)).Add(entity);
+            
+            return entities.Count();
         }
     }
 }

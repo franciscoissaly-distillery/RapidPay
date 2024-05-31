@@ -2,11 +2,9 @@
 {
     public class CardTransactionType
     {
-        public string SystemCode { get; init; }
-
-        public string Name { get; init; }
-
-        public int Sign { get; init; }
+        public string SystemCode { get; }
+        public string Name { get; }
+        public int Sign { get; }
         public bool GeneratesFee { get; init; }
 
         public CardTransactionType(string systemCode, int sign, bool generatesFee, string name = "")

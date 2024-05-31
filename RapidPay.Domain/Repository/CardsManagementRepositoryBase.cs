@@ -7,78 +7,90 @@ namespace RapidPay.Domain.Repository
         protected CardsManagementRepositoryBase() : this(null!)
         { }
 
-        private readonly DefaultEntities _defaultEntities;
+        private DefaultEntities _defaultEntities;
         protected CardsManagementRepositoryBase(DefaultEntities defaultEntities)
         {
-            if (defaultEntities == null)
-                defaultEntities = new DefaultEntities();
-
             _defaultEntities = defaultEntities;
         }
 
         protected virtual bool IsInitialized { get; set; }
-        protected void Initialize()
+
+        protected void EnsureRepositoryIsInitialized()
         {
             if (IsInitialized)
                 return;
 
-            lock (this)
+            lock (typeof(CardsManagementRepositoryBase))
             {
                 if (IsInitialized)
                     return;
+
+                if (_defaultEntities == null)
+                    _defaultEntities = new DefaultEntities();
 
                 OnInitializeTransactionTypes(_defaultEntities.CardTransactionTypes);
                 IsInitialized = true;
             }
         }
 
-        protected void OnInitializeTransactionTypes(IEnumerable<CardTransactionType> preexistingInstances)
+        protected void OnInitializeTransactionTypes(IEnumerable<CardTransactionType> expectedInstances)
         {
-            var systemCodes = (from preexisting in preexistingInstances
-                               select preexisting.SystemCode).ToList();
+            if (expectedInstances == null || !expectedInstances.Any())
+                return;
+
+            var expectedSystemCodes = (from expected in expectedInstances
+                                       select expected.SystemCode).ToList();
 
             var storedInstances = (from stored in OnGetQueryable<CardTransactionType>()
-                                   where systemCodes.Contains(stored.SystemCode)
+                                   where expectedSystemCodes.Contains(stored.SystemCode)
                                    select stored).ToList();
 
-            var missingInstances = preexistingInstances.Except(from preexisting in preexistingInstances
-                                                               from stored in storedInstances
-                                                               where stored.SystemCode == preexisting.SystemCode
-                                                               select preexisting).ToList();
+            var missingInstances = expectedInstances.Except(from expected in expectedInstances
+                                                            from stored in storedInstances
+                                                            where stored.SystemCode == expected.SystemCode
+                                                            select expected).ToList();
 
-            foreach (var missing in missingInstances)
-                OnSaveAndReturnSavedCount(missing);
+            if (missingInstances.Any())
+                OnSaveAndReturnSavedCount(missingInstances);
         }
 
         protected IQueryable<TEntity> GetQueryable<TEntity>()
             where TEntity : class
         {
-            if (!IsInitialized)
-                Initialize();
-
+            EnsureRepositoryIsInitialized();
             return OnGetQueryable<TEntity>();
         }
 
         protected abstract IQueryable<TEntity> OnGetQueryable<TEntity>()
             where TEntity : class;
 
-
         async protected Task<int> Save<TEntity>(TEntity entity)
             where TEntity : class
         {
-            if (!IsInitialized)
-                Initialize();
-
-            return await Task.Run(() => OnSaveAndReturnSavedCount(entity));
+            IEnumerable<TEntity> entities = [entity];
+            return await Save(entities);
         }
 
+        async protected Task<int> Save<TEntity>(IEnumerable<TEntity> entities)
+            where TEntity : class
+        {
+            EnsureRepositoryIsInitialized();
+            return await Task.Run(() => OnSaveAndReturnSavedCount(entities));
+        }
 
-        protected abstract int OnSaveAndReturnSavedCount<TEntity>(TEntity entity)
+        protected abstract int OnSaveAndReturnSavedCount<TEntity>(IEnumerable<TEntity> entities)
             where TEntity : class;
+
 
         async public Task<CardTransactionType> GetTransactionType(string systemCode)
         {
-            return await Task.Run(() => GetQueryable<CardTransactionType>().FirstOrDefault(x => x.SystemCode == systemCode));
+            EnsureRepositoryIsInitialized();
+            return await Task.Run(() => OnGetTransactionType(systemCode));
+        }
+
+        protected virtual CardTransactionType OnGetTransactionType(string systemCode)
+        {
+            return GetQueryable<CardTransactionType>().FirstOrDefault(x => x.SystemCode == systemCode);
         }
 
         async public Task<List<Card>> GetAllCards()
@@ -86,9 +98,14 @@ namespace RapidPay.Domain.Repository
             return await Task.Run(() => GetQueryable<Card>().ToList());
         }
 
-        async public Task<Card> GetCardByNumber(string cardNumber)
+        async public Task<Card> GetCard(string cardNumber)
         {
-            return await Task.Run(() => GetQueryable<Card>().FirstOrDefault(card => card.Number == cardNumber));
+            EnsureRepositoryIsInitialized();
+            return await Task.Run(() => OnGetCard(cardNumber));
+        }
+        protected virtual Card OnGetCard(string cardNumber)
+        {
+            return GetQueryable<Card>().FirstOrDefault(card => card.Number == cardNumber);
         }
 
         async public Task<List<CardTransaction>> GetAllCardTransactions(Card existingCard, DateTime? asOfDate = null)
@@ -100,8 +117,15 @@ namespace RapidPay.Domain.Repository
         async public Task<CardTransaction> GetCardLastTransaction(Card existingCard, DateTime? asOfDate = null)
         {
             var cardTransactions = OnGetCardTransactionsQuery(existingCard, asOfDate, 1);
-            return await Task.Run(() => cardTransactions.FirstOrDefault());
+            return await Task.Run(() => cardTransactions.SingleOrDefault());
         }
+
+        async public Task<decimal> GetCardBalanceFromLastTransaction(Card existingCard, DateTime? asOfDate = null)
+        {
+            var cardTransactions = OnGetCardTransactionsQuery(existingCard, asOfDate, 1);
+            return await Task.Run(() => cardTransactions.Sum(x => x.CardBalanceAmount));
+        }
+
 
         private IQueryable<CardTransaction> OnGetCardTransactionsQuery(Card existingCard, DateTime? asOfDate = default, int? resultsLimit = default)
         {
@@ -145,7 +169,7 @@ namespace RapidPay.Domain.Repository
 
             if (transaction != null)
             {
-                var existingCard = await GetCardByNumber(transaction.Card.Number);
+                var existingCard = await GetCard(transaction.Card.Number);
                 if (existingCard != null)
                 {
                     int updatedRecords = await Save(transaction);
