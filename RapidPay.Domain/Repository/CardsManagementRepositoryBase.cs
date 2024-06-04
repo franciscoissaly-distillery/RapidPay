@@ -82,15 +82,15 @@ namespace RapidPay.Domain.Repository
             where TEntity : class;
 
 
-        async public Task<CardTransactionType> GetTransactionType(string systemCode)
+        async public Task<CardTransactionType?> GetTransactionType(string systemCode)
         {
             EnsureRepositoryIsInitialized();
             return await Task.Run(() => OnGetTransactionType(systemCode));
         }
 
-        protected virtual CardTransactionType OnGetTransactionType(string systemCode)
+        protected virtual CardTransactionType? OnGetTransactionType(string systemCode)
         {
-            return GetQueryable<CardTransactionType>().FirstOrDefault(x => x.SystemCode == systemCode);
+            return GetQueryable<CardTransactionType>().FirstOrDefault(x => x.SystemCode.ToLower() == systemCode.ToLower());
         }
 
         async public Task<List<Card>> GetAllCards()
@@ -98,12 +98,12 @@ namespace RapidPay.Domain.Repository
             return await Task.Run(() => GetQueryable<Card>().ToList());
         }
 
-        async public Task<Card> GetCard(string cardNumber)
+        async public Task<Card?> GetCard(string cardNumber)
         {
             EnsureRepositoryIsInitialized();
             return await Task.Run(() => OnGetCard(cardNumber));
         }
-        protected virtual Card OnGetCard(string cardNumber)
+        protected virtual Card? OnGetCard(string cardNumber)
         {
             return GetQueryable<Card>().FirstOrDefault(card => card.Number == cardNumber);
         }
@@ -114,13 +114,13 @@ namespace RapidPay.Domain.Repository
             return await Task.Run(() => cardTransactions.ToList());
         }
 
-        async public Task<CardTransaction> GetCardLastTransaction(Card existingCard, DateTime? asOfDate = null)
+        async public Task<CardTransaction?> GetCardLastTransaction(Card existingCard, DateTime? asOfDate = null)
         {
             var cardTransactions = OnGetCardTransactionsQuery(existingCard, asOfDate, 1);
             return await Task.Run(() => cardTransactions.SingleOrDefault());
         }
 
-        async public Task<decimal> GetCardBalanceFromLastTransaction(Card existingCard, DateTime? asOfDate = null)
+        async public Task<decimal> GetBalanceAmountFromLastTransaction(Card existingCard, DateTime? asOfDate = null)
         {
             var cardTransactions = OnGetCardTransactionsQuery(existingCard, asOfDate, 1);
             return await Task.Run(() => cardTransactions.Sum(x => x.CardBalanceAmount));
@@ -129,7 +129,7 @@ namespace RapidPay.Domain.Repository
 
         private IQueryable<CardTransaction> OnGetCardTransactionsQuery(Card existingCard, DateTime? asOfDate = default, int? resultsLimit = default)
         {
-            IQueryable<CardTransaction> transactions = null;
+            IQueryable<CardTransaction> transactions;
 
             if (asOfDate.GetValueOrDefault() == default)
                 asOfDate = DateTime.Now;
@@ -137,7 +137,7 @@ namespace RapidPay.Domain.Repository
             if (existingCard != null)
             {
                 transactions = (from eachTransaction in GetQueryable<CardTransaction>()
-                                where eachTransaction.Card.Number == existingCard.Number
+                                where eachTransaction.Card.Number.ToLower() == existingCard.Number.ToLower()
                                     && eachTransaction.TransactionDate < asOfDate
                                 orderby eachTransaction.TransactionDate descending
                                 select eachTransaction);

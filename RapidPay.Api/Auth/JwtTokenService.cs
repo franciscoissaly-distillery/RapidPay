@@ -8,15 +8,12 @@ namespace RapidPay.Api.Auth
 {
     public class JwtTokenService : IJwtTokenService
     {
-        private readonly string _secretKey;
-        private readonly string _issuer;
-        private readonly string _audience;
-
         private readonly JwtSettings _jwtSettings;
 
         public JwtTokenService(IConfiguration configuration)
         {
-            _jwtSettings = configuration.GetSection("Jwt").Get<JwtSettings>();
+            ArgumentNullException.ThrowIfNull(configuration);
+            _jwtSettings = configuration.GetSection("Jwt").Get<JwtSettings>()!;
         }
 
         public string GenerateToken(string username)

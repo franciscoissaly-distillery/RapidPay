@@ -5,14 +5,14 @@ namespace RapidPay.Domain.Repository
 {
     public interface ICardsManagementRepository
     {
-        Task<CardTransactionType> GetTransactionType(string systemCode);
-        Task<Card> GetCard(string cardNumber);
+        Task<CardTransactionType?> GetTransactionType(string systemCode);
+        Task<Card?> GetCard(string cardNumber);
         Task<bool> SaveCard(Card card);
-        Task<CardTransaction> GetCardLastTransaction(Card existingCard, DateTime? asOfDate = default);
+        Task<CardTransaction?> GetCardLastTransaction(Card existingCard, DateTime? asOfDate = default);
         Task<bool> SaveTransaction(CardTransaction transaction);
 
         Task<List<Card>> GetAllCards();
         Task<List<CardTransaction>> GetAllCardTransactions(Card existingCard, DateTime? asOfDate = default);
-        Task<decimal> GetCardBalanceFromLastTransaction(Card existingCard, DateTime? asOfDate = null);
+        Task<decimal> GetBalanceAmountFromLastTransaction(Card existingCard, DateTime? asOfDate = null);
     }
 }

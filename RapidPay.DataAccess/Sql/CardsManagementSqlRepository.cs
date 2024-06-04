@@ -49,12 +49,12 @@ namespace RapidPay.DataAccess.Sql
             return updatedRecords;
         }
 
-        protected override CardTransactionType OnGetTransactionType(string systemCode)
+        protected override CardTransactionType? OnGetTransactionType(string systemCode)
         {
             return _db.Set<CardTransactionType>().Find(systemCode);
         }
 
-        protected override Card OnGetCard(string cardNumber)
+        protected override Card? OnGetCard(string cardNumber)
         {
             return _db.Set<Card>().Find(cardNumber);
         }

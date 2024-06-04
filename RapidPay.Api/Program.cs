@@ -56,7 +56,7 @@ builder.Services.AddControllers(options =>
 // Add JWT auth
 var jwtConfigSection = builder.Configuration.GetSection("Jwt");
 var jwtSettings = jwtConfigSection.Get<JwtSettings>();
-var symmetricKey = Encoding.ASCII.GetBytes(jwtSettings.SecretKey);
+var symmetricKey = Encoding.ASCII.GetBytes(jwtSettings!.SecretKey);
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

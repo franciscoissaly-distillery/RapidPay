@@ -25,19 +25,19 @@ namespace RapidPay.Domain.Services
 
         public async Task<decimal> GetCardBalance(string cardNumber, DateTime? asOfDate = default)
         {
-            Card existingCard = await GetCard(cardNumber);
+            Card? existingCard = await GetCard(cardNumber);
             return await OnGetCardBalance(existingCard, asOfDate);
         }
 
         private async Task<decimal> OnGetCardBalance(Card existingCard, DateTime? asOfDate = default)
         {
             ArgumentNullException.ThrowIfNull(existingCard);
-            return await _repository.GetCardBalanceFromLastTransaction(existingCard, asOfDate);
+            return await _repository.GetBalanceAmountFromLastTransaction(existingCard, asOfDate);
         }
 
         public async Task<Card> GetCard(string cardNumber)
         {
-            Card existingCard = await OnGetCard(cardNumber);
+            Card? existingCard = await OnGetCard(cardNumber);
             if (existingCard == null)
                 throw new CardsManagementException("Unknown card number")
                 {
@@ -48,7 +48,7 @@ namespace RapidPay.Domain.Services
             return existingCard;
         }
 
-        private async Task<Card> OnGetCard(string cardNumber)
+        private async Task<Card?> OnGetCard(string cardNumber)
         {
             if (!IsValidCardNumber(cardNumber))
                 throw new CardsManagementException("Invalid card number. Expecting 15 digits")
@@ -69,7 +69,7 @@ namespace RapidPay.Domain.Services
 
         public async Task<Card> CreateCard(string cardNumber)
         {
-            Card existingCard = await OnGetCard(cardNumber);
+            Card? existingCard = await OnGetCard(cardNumber);
             if (existingCard != null)
                 throw new CardsManagementException("Card number already in use")
                 {
@@ -88,7 +88,7 @@ namespace RapidPay.Domain.Services
             return await OnRegisterCardTransaction(transactionType, cardNumber, paymentAmount);
         }
 
-        private async Task<CardTransaction> OnRegisterCardTransaction(CardTransactionType transactionType, string cardNumber, decimal paymentAmount)
+        private async Task<CardTransaction> OnRegisterCardTransaction(CardTransactionType? transactionType, string cardNumber, decimal paymentAmount)
         {
 
             ArgumentNullException.ThrowIfNull(transactionType);

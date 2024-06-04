@@ -28,7 +28,7 @@ namespace RapidPay.Api.Filters
             else if (_env.IsDevelopment())
             {
                 var objectResult = new ObjectResult("An unhandled exception occurred.") { StatusCode = (int) HttpStatusCode.InternalServerError };
-                _logger.LogError(context.Exception, objectResult.Value.ToString());
+                _logger.LogError(context.Exception, objectResult.Value!.ToString());
                 context.Result = objectResult;
             }
         }

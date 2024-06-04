@@ -11,13 +11,23 @@
 
         #region "for db mapping purposes"
 
-        protected CardTransaction(string cardNumber)
+        private CardTransaction(string cardNumber)
         {
             ArgumentNullException.ThrowIfNull(cardNumber);
             _cardNumber = cardNumber;
         }
-        private string _cardNumber;
-        public string CardNumber => Card != null ? Card.Number : _cardNumber;
+
+        private string _cardNumber = string.Empty;
+        public string CardNumber
+        {
+            get
+            {
+                if (Card == null)
+                    return _cardNumber;
+
+                return Card.Number;
+            }
+        }
 
         #endregion
 
@@ -27,9 +37,9 @@
         public Guid Id { get; set; }
 
         public CardTransactionType TransactionType { get; set; }
-        public DateTime TransactionDate { get; set; }
-        public decimal TransactionAmount { get; set; }
-        public decimal FeeAmount { get; set; }
-        public decimal CardBalanceAmount { get; set; }
+        public DateTime TransactionDate { get; set; } = DateTime.UtcNow;
+        public decimal TransactionAmount { get; set; } = 0;
+        public decimal FeeAmount { get; set; } = 0;
+        public decimal CardBalanceAmount { get; set; } = 0;
     }
 }

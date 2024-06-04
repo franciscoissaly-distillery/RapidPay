@@ -83,7 +83,7 @@ namespace RapidPay.DataAccess.Sql
 
                 entity.HasOne(x => x.TransactionType).WithMany()
                       .HasForeignKey("TypeSystemCode")
-                      .HasPrincipalKey(transactionType => transactionType.SystemCode);
+                      .HasPrincipalKey(transactionType => transactionType.SystemCode)                      ;
 
                 entity.Navigation(x => x.TransactionType)
                       .AutoInclude();
