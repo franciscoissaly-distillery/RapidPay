@@ -1,11 +1,15 @@
-﻿using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace RapidPay.Api.Auth
 {
 
     public class LoginRequest
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
+        [Required]
+        public required string Username { get; set; }
+       
+        [Required]
+        public required string Password { get; set; }
     }
 }

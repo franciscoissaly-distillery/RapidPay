@@ -2,6 +2,6 @@
 {
     public class CardDto
     {
-        public string Number { get; set; }
+        public required string Number { get; set; }
     }
 }

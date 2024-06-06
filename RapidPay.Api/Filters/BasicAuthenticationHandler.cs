@@ -19,8 +19,6 @@ namespace RapidPay.Api.Filters
             IOptionsMonitor<AuthenticationSchemeOptions> options,
             ILoggerFactory logger,
             UrlEncoder encoder,
-            //ISystemClock clock,
-            //IUsersAdapter usersManager) : base(options, logger, encoder, clock)
             IUsersAdapter usersManager) : base(options, logger, encoder)
         {
             ArgumentNullException.ThrowIfNull(usersManager);

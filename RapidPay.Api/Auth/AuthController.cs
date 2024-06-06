@@ -19,7 +19,6 @@ namespace RapidPay.Api.Auth
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            // Replace with your user validation logic
             if (_usersManager.IsValidUser(request.Username, request.Password))
             {
                 var token = _jwtTokenService.GenerateToken(request.Username);

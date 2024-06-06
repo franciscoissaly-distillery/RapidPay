@@ -10,7 +10,7 @@ namespace RapidPay.Fees.Mocks
         // not really necessary, since the instance to use is injected in clients of IPaymentManager
         // and may be administered as a singleton by the DI injector;
         // nontheless, still a explicit part of the requirement
-        private static RandomPaymentFeesManager _instance;
+        private static RandomPaymentFeesManager _instance = null!;
         public static RandomPaymentFeesManager Instance
         {
             get

@@ -77,13 +77,15 @@ namespace RapidPay.DataAccess.Sql
                       .HasDefaultValue(0)
                       .HasPrecision(17, 4);
 
-                entity.HasOne(x => x.Card).WithMany()
+                entity.HasOne(x => x.Card)
+                      .WithMany()
                       .HasForeignKey(x => x.CardNumber)
                       .HasPrincipalKey(card => card.Number);
 
-                entity.HasOne(x => x.TransactionType).WithMany()
+                entity.HasOne(x => x.TransactionType)
+                      .WithMany()
                       .HasForeignKey("TypeSystemCode")
-                      .HasPrincipalKey(transactionType => transactionType.SystemCode)                      ;
+                      .HasPrincipalKey(transactionType => transactionType.SystemCode);
 
                 entity.Navigation(x => x.TransactionType)
                       .AutoInclude();

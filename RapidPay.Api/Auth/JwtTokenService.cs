@@ -18,10 +18,7 @@ namespace RapidPay.Api.Auth
 
         public string GenerateToken(string username)
         {
-            var claims = new[]
-            {
-            new Claim(ClaimTypes.Name, username)
-        };
+            var claims = new[] {new Claim(ClaimTypes.Name, username)};
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
