@@ -24,7 +24,7 @@ namespace RapidPay.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAllCards()
         {
             var existingCards = await _cardsManager.GetAllExistingCards();
             if (!existingCards.Any())

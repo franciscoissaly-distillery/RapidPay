@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
 using RapidPay.Domain.Exceptions;
 using RapidPay.Domain.Repository;
@@ -22,15 +23,29 @@ namespace RapidPay.Api.Filters
         {
             if (context.Exception is CardsManagementException exception)
             {
-                context.Result = new BadRequestObjectResult(exception.GetMessage());
+                context.Result = GetBadRequestResultFromException(context, exception); 
                 context.ExceptionHandled = true;
             }
             else if (_env.IsDevelopment())
             {
-                var objectResult = new ObjectResult("An unhandled exception occurred.") { StatusCode = (int) HttpStatusCode.InternalServerError };
+                var objectResult = new ObjectResult("An unhandled exception occurred.") { StatusCode = (int)HttpStatusCode.InternalServerError };
                 _logger.LogError(context.Exception, objectResult.Value!.ToString());
                 context.Result = objectResult;
             }
+        }
+
+        private static BadRequestObjectResult GetBadRequestResultFromException(ExceptionContext context, CardsManagementException exception)
+        {
+            context.ModelState.AddModelError(exception.MemberName ?? "Invalid", exception.GetMessage());
+            
+            var problem = new ValidationProblemDetails(context.ModelState);
+            problem.Extensions["traceId"] = context.HttpContext.TraceIdentifier;
+            problem.Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1";
+            
+            var httpResult = new BadRequestObjectResult(problem);
+            problem.Status = httpResult.StatusCode;
+
+            return httpResult;
         }
     }
 }

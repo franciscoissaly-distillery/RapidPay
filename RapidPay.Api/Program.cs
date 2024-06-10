@@ -67,11 +67,16 @@ builder.Services.AddAuthentication(options =>
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateIssuerSigningKey = true,
         ValidIssuer = jwtSettings.Issuer,
+
+        ValidateAudience = true,
         ValidAudience = jwtSettings.Audience,
-        IssuerSigningKey = new SymmetricSecurityKey(symmetricKey)
+
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(symmetricKey),
+
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.FromSeconds(30)
     };
 });
 
@@ -118,6 +123,7 @@ builder.Services.AddSwaggerGen(options =>
 
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
+
         {
             new OpenApiSecurityScheme
             {
