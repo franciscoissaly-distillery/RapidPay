@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34916.146
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidPay.CardsManagement.Api", "RapidPay.Api\RapidPay.CardsManagement.Api.csproj", "{99FE6038-FA91-4FCC-9B66-F2BEABAA5043}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidPay.CardsManagement.Api", "RapidPay.Api\RapidPay.CardsManagement.Api.csproj", "{99FE6038-FA91-4FCC-9B66-F2BEABAA5043}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidPay.Domain", "RapidPay.Domain\RapidPay.Domain.csproj", "{1880D120-FB21-467B-8CA2-152F7B9CCCC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidPay.Domain", "RapidPay.Domain\RapidPay.Domain.csproj", "{1880D120-FB21-467B-8CA2-152F7B9CCCC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidPay.DataAccess", "RapidPay.DataAccess\RapidPay.DataAccess.csproj", "{B7E37CE2-F458-4228-99BC-EAF3AB430A55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidPay.DataAccess", "RapidPay.DataAccess\RapidPay.DataAccess.csproj", "{B7E37CE2-F458-4228-99BC-EAF3AB430A55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidPay.FeesManagement", "RapidPay.Fees\RapidPay.FeesManagement.csproj", "{DEA16C26-92DE-4526-BA4A-2BBFEFD1F4EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidPay.FeesManagement", "RapidPay.Fees\RapidPay.FeesManagement.csproj", "{DEA16C26-92DE-4526-BA4A-2BBFEFD1F4EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidPay.Users", "RapidPay.Auth\RapidPay.Users.csproj", "{4DB5444F-6947-450F-A68C-8E08282E28ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidPay.Users", "RapidPay.Auth\RapidPay.Users.csproj", "{4DB5444F-6947-450F-A68C-8E08282E28ED}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{5B4C8124-0EAB-41EB-A935-A4585D45586F}"
 EndProject
@@ -23,6 +23,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidPay.FeesManagement.Api", "RapidPay.FeesManagement.Api\RapidPay.FeesManagement.Api.csproj", "{C0CFFA6D-EB7D-4412-811C-79D1CBD1E562}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidPay.Auth.Api", "RapidPay.Auth.Api\RapidPay.Auth.Api.csproj", "{37263426-30CE-408C-A195-74A6364EE769}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidPay.Api.Framework", "RapidPay.Api.Framework\RapidPay.Api.Framework.csproj", "{FE3C908A-F949-4CF7-BB34-8543ABD3C541}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +56,18 @@ Global
 		{4DB5444F-6947-450F-A68C-8E08282E28ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DB5444F-6947-450F-A68C-8E08282E28ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DB5444F-6947-450F-A68C-8E08282E28ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0CFFA6D-EB7D-4412-811C-79D1CBD1E562}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0CFFA6D-EB7D-4412-811C-79D1CBD1E562}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0CFFA6D-EB7D-4412-811C-79D1CBD1E562}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0CFFA6D-EB7D-4412-811C-79D1CBD1E562}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37263426-30CE-408C-A195-74A6364EE769}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37263426-30CE-408C-A195-74A6364EE769}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37263426-30CE-408C-A195-74A6364EE769}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37263426-30CE-408C-A195-74A6364EE769}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE3C908A-F949-4CF7-BB34-8543ABD3C541}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE3C908A-F949-4CF7-BB34-8543ABD3C541}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE3C908A-F949-4CF7-BB34-8543ABD3C541}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE3C908A-F949-4CF7-BB34-8543ABD3C541}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +78,9 @@ Global
 		{B7E37CE2-F458-4228-99BC-EAF3AB430A55} = {2FAB6D6D-A978-41E8-A7E2-C10A829E8467}
 		{DEA16C26-92DE-4526-BA4A-2BBFEFD1F4EE} = {0E5B853E-4C87-45E0-BF2C-CDC1133B0D1F}
 		{4DB5444F-6947-450F-A68C-8E08282E28ED} = {0E5B853E-4C87-45E0-BF2C-CDC1133B0D1F}
+		{C0CFFA6D-EB7D-4412-811C-79D1CBD1E562} = {5B4C8124-0EAB-41EB-A935-A4585D45586F}
+		{37263426-30CE-408C-A195-74A6364EE769} = {5B4C8124-0EAB-41EB-A935-A4585D45586F}
+		{FE3C908A-F949-4CF7-BB34-8543ABD3C541} = {5B4C8124-0EAB-41EB-A935-A4585D45586F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9F316863-EDE2-4B74-AC39-DB1F5861E648}

@@ -1,23 +1,18 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using RapidPay.Api.Framework.Controllers;
 using RapidPay.Api.Models;
 using RapidPay.Domain.Entities;
-using RapidPay.Domain.Exceptions;
 using RapidPay.Domain.Services;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace RapidPay.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    [Authorize]
-    public partial class CardsController : ControllerBase
+
+    public partial class CardsController : RapidPayApiControllerBase
     {
         private ICardsManager _cardsManager;
         private ModelsMapper _mapper = new();
 
-        public CardsController(ICardsManager cardsManager) : base()
+        public CardsController(ICardsManager cardsManager)
         {
             ArgumentNullException.ThrowIfNull(cardsManager);
             _cardsManager = cardsManager;

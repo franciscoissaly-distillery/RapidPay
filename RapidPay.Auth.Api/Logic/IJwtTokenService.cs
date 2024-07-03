@@ -1,4 +1,4 @@
-﻿namespace RapidPay.Api.Auth
+﻿namespace RapidPay.Auth.Api.Logic
 {
     public interface IJwtTokenService
     {

@@ -1,7 +1,20 @@
-﻿namespace RapidPay.Api.Auth
+﻿
+using Microsoft.Extensions.Configuration;
+
+namespace RapidPay.Api.Framework.Authentication
 {
     public class JwtSettings
     {
+        public const string ConfigSectionName = "Jwt";
+
+        public static JwtSettings ReadFromConfiguration(IConfiguration configuration)
+        {
+            ArgumentNullException.ThrowIfNull(configuration);
+            IConfigurationSection section = configuration.GetSection(ConfigSectionName);
+            if (section is null)
+                throw new InvalidOperationException($"Missing configuration section '{ConfigSectionName}'");
+            return section.Get<JwtSettings>()!;
+        }
 
         public JwtSettings(string secretKey, string issuer, string audience)
         {
@@ -18,9 +31,7 @@
             Issuer = issuer;
             Audience = audience;
         }
-        //public string SecretKey { get; init; }
-        //public string Issuer { get; init; }
-        //public string Audience { get; init; }
+
         public string SecretKey { get; }
         public string Issuer { get; }
         public string Audience { get; }

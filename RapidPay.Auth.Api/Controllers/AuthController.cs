@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RapidPay.Auth.Api.Logic;
+using RapidPay.Auth.Api.Models;
 using RapidPay.Domain.Adapters;
 
 namespace RapidPay.Api.Auth
@@ -22,7 +24,7 @@ namespace RapidPay.Api.Auth
             if (_usersManager.IsValidUser(request.Username, request.Password))
             {
                 var token = _jwtTokenService.GenerateToken(request.Username);
-                return Ok(new { Token = token });
+                return Ok(new LoginResponse { Token = token });
             }
 
             return Unauthorized();

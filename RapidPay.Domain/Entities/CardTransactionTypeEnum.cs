@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace RapidPay.Domain.Entities
+﻿namespace RapidPay.Domain.Entities
 {
 
     public enum CardTransactionTypeEnum

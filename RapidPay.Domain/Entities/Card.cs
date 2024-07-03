@@ -2,12 +2,12 @@
 {
     public class Card
     {
-        public Card (string number)
+        public Card(string number)
         {
             ArgumentNullException.ThrowIfNull(number);
             Number = number;
         }
 
-        public string Number { get;}
+        public string Number { get; }
     }
 }

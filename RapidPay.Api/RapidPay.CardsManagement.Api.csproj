@@ -23,10 +23,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RapidPay.Api.Framework\RapidPay.Api.Framework.csproj" />
     <ProjectReference Include="..\RapidPay.Auth\RapidPay.Users.csproj" />
     <ProjectReference Include="..\RapidPay.DataAccess\RapidPay.DataAccess.csproj" />
     <ProjectReference Include="..\RapidPay.Domain\RapidPay.Domain.csproj" />
     <ProjectReference Include="..\RapidPay.Fees\RapidPay.FeesManagement.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Filters\" />
   </ItemGroup>
 
 </Project>

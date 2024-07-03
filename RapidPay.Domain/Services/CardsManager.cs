@@ -2,9 +2,6 @@
 using RapidPay.Domain.Entities;
 using RapidPay.Domain.Exceptions;
 using RapidPay.Domain.Repository;
-using System.Diagnostics;
-using System.Security.Claims;
-using System.Security.Principal;
 using System.Text.RegularExpressions;
 
 namespace RapidPay.Domain.Services
@@ -111,7 +108,11 @@ namespace RapidPay.Domain.Services
             };
 
             if (transactionType.GeneratesFee)
-                newPayment.FeeAmount = await _paymentFeesManager.CalculatePaymentFee(newPayment);
+                newPayment.FeeAmount = await _paymentFeesManager.CalculatePaymentFee(new GetFeeRequest
+                {
+                    TransactionDate = newPayment.TransactionDate,
+                    TransactionAmount = newPayment.TransactionAmount,
+                });
 
             newPayment.CardBalanceAmount = OnCalculateNewBalance(currentBalance, newPayment);
 

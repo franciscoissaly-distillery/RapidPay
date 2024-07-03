@@ -1,7 +1,5 @@
 ﻿using RapidPay.Domain.Entities;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace RapidPay.Api.Models
 {
     public class ModelsMapper
@@ -10,7 +8,7 @@ namespace RapidPay.Api.Models
         {
             ArgumentNullException.ThrowIfNull(cards);
             return from card in cards
-                    select MapToModel(card);
+                   select MapToModel(card);
         }
 
         public CardDto MapToModel(Card card)
@@ -22,7 +20,7 @@ namespace RapidPay.Api.Models
         {
             ArgumentNullException.ThrowIfNull(transactions);
             return from transaction in transactions
-                    select MapToModel(transaction);
+                   select MapToModel(transaction);
         }
 
         public TransactionDto MapToModel(CardTransaction transaction)
@@ -30,13 +28,13 @@ namespace RapidPay.Api.Models
             ArgumentNullException.ThrowIfNull(transaction);
             return new TransactionDto()
             {
-                CardNumber=transaction.Card.Number,
+                CardNumber = transaction.Card.Number,
                 TypeCode = transaction.TransactionType.SystemCode,
                 TypeName = transaction.TransactionType.Name,
                 Date = transaction.TransactionDate,
                 Amount = transaction.TransactionAmount,
                 FeeAmount = transaction.FeeAmount,
-                BalanceAmount=transaction.CardBalanceAmount
+                BalanceAmount = transaction.CardBalanceAmount
             };
         }
     }

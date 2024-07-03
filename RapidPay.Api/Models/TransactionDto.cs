@@ -1,6 +1,4 @@
-﻿using RapidPay.Domain.Entities;
-
-namespace RapidPay.Api.Models
+﻿namespace RapidPay.Api.Models
 {
     public class TransactionDto
     {

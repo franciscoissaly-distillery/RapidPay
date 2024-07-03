@@ -1,8 +1,5 @@
-﻿using RapidPay.Domain.Entities;
-using RapidPay.Domain.Repository;
+﻿using RapidPay.Domain.Repository;
 using System.Collections.Concurrent;
-using System.Linq;
-using System.Security.Cryptography;
 
 namespace RapidPay.DataAccess.Mocks
 {
@@ -30,7 +27,7 @@ namespace RapidPay.DataAccess.Mocks
         {
             foreach (var entity in entities)
                 GetBag(typeof(TEntity)).Add(entity);
-            
+
             return entities.Count();
         }
     }

@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace RapidPay.Api.Auth
+namespace RapidPay.Api.Framework.Authentication
 {
     public class KeyGenerator
     {
@@ -8,7 +8,7 @@ namespace RapidPay.Api.Auth
         {
             using (var rng = RandomNumberGenerator.Create())
             {
-                byte[] key = new byte[32];
+                var key = new byte[32];
                 rng.GetBytes(key);
                 return Convert.ToBase64String(key);
             }

@@ -15,7 +15,7 @@ namespace RapidPay.Domain.Exceptions
         public CardsManagementException(string? message, Exception? innerException) : base(message, innerException)
         { }
 
-        public string GetMessage()
+        public string GetValidationMessage()
         {
             var resultMessage = new StringBuilder();
 
