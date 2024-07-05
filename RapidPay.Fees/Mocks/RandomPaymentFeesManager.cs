@@ -25,11 +25,9 @@ namespace RapidPay.Fees.Mocks
         protected RandomPaymentFeesManager()
         { }
 
-
         private decimal _feeFactor;
         private DateTime _feeFactorExpiration;
         private decimal _lastFeeAmount;
-
 
         public async Task<decimal> CalculatePaymentFee(GetFeeRequest request)
         // current implementation ignores the received payment, but any more realistic implementation

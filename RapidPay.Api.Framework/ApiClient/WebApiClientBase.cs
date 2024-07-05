@@ -5,6 +5,9 @@ using Microsoft.Extensions.Configuration;
 using RapidPay.Api.Framework.Authentication;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Reflection;
+using System.Text.Json.Serialization;
+using System.Web;
 using static RapidPay.Api.Framework.ApiClient.WebApiClientBase;
 
 namespace RapidPay.Api.Framework.ApiClient
@@ -24,8 +27,36 @@ namespace RapidPay.Api.Framework.ApiClient
 
         protected async Task<TResponse?> InvokeGet<TResponse, TRequest>(string relativeUrl, TRequest request)
         {
-            var requestMessage = new HttpRequestMessage(HttpMethod.Get, relativeUrl);
-            HttpClient client = GetConfiguredHttpClient(requestMessage);
+            return await InvokeHttp<TResponse, TRequest>(HttpMethod.Get, relativeUrl, request, PopulateQueryString);
+        }
+
+        protected async Task<TResponse?> InvokePost<TResponse, TRequest>(string relativeUrl, TRequest request)
+        {
+            return await InvokeHttp<TResponse, TRequest>(HttpMethod.Post, relativeUrl, request, PopulateBody);
+        }
+
+        protected async Task<TResponse?> InvokeHttp<TResponse, TRequest>(
+            HttpMethod verb,
+            string relativeUrl,
+            TRequest request,
+            Action<HttpRequestMessage, TRequest> populateRequestMessageAction)
+        {
+            ArgumentNullException.ThrowIfNull(verb);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(relativeUrl);
+
+            HttpClient client = GetConfiguredHttpClient();
+            if (client.BaseAddress is null)
+                throw new InvalidOperationException("Invalid null base address to invoke");
+
+            var url = new Uri(client.BaseAddress, new Uri(relativeUrl, UriKind.Relative));
+            var requestMessage = new HttpRequestMessage(verb, url);
+
+            if (populateRequestMessageAction is not null)
+                if (request is not null)
+                    populateRequestMessageAction.Invoke(requestMessage, request);
+
+            foreach (var header in client.DefaultRequestHeaders)
+                requestMessage.Headers.Add(header.Key, header.Value);
 
             var responseMessage = await client.SendAsync(requestMessage);
             responseMessage.EnsureSuccessStatusCode();
@@ -34,7 +65,52 @@ namespace RapidPay.Api.Framework.ApiClient
             return response;
         }
 
-        protected virtual HttpClient GetConfiguredHttpClient(HttpRequestMessage request)
+        protected void PopulateQueryString<TRequest>(HttpRequestMessage requestMessage, TRequest request)
+        {
+            ArgumentNullException.ThrowIfNull(requestMessage);
+            if (requestMessage.RequestUri is null)
+                throw new ArgumentException("Invalid request message with null RequestUri", nameof(requestMessage));
+
+            var queryString = BuildQueryString(request);
+            if (string.IsNullOrEmpty(queryString))
+                return;
+
+            var uriBuilder = new UriBuilder(requestMessage.RequestUri);
+            if (string.IsNullOrWhiteSpace(uriBuilder.Query))
+                uriBuilder.Query = queryString;
+            else
+                uriBuilder.Query = $"{uriBuilder.Query.Substring(1)}&{queryString}";
+
+            requestMessage.RequestUri = uriBuilder.Uri;
+        }
+
+        public virtual string? BuildQueryString<TRequest>(TRequest? request)
+        {
+            if (request is null)
+                return null;
+
+            var properties = (
+                                from eachProperty in request.GetType().GetProperties()
+                                where eachProperty.CanRead
+                                where eachProperty.GetIndexParameters().Length == 0
+                                where eachProperty.GetCustomAttribute<JsonIgnoreAttribute>(true) is null
+                                let eachPropertyValue = eachProperty.GetValue(request)
+                                where eachPropertyValue is not null
+                                select eachProperty.Name + "=" + HttpUtility.UrlEncode(eachPropertyValue.ToString())
+                             ).ToArray();
+
+            string queryString = string.Join("&", properties);
+            return queryString;
+        }
+
+
+        protected void PopulateBody<TRequest>(HttpRequestMessage requestMessage, TRequest request)
+        {
+            requestMessage.Content = JsonContent.Create(request);
+        }
+
+
+        protected virtual HttpClient GetConfiguredHttpClient()
         {
             HttpClient client = CreateHttpClient();
 
@@ -46,9 +122,6 @@ namespace RapidPay.Api.Framework.ApiClient
 
             if (client.DefaultRequestHeaders.Authorization is null)
                 client.DefaultRequestHeaders.Authorization = GetAuthorizationHeader();
-
-            foreach (var header in client.DefaultRequestHeaders)
-                request.Headers.Add(header.Key, header.Value);
 
             return client;
         }

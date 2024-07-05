@@ -8,6 +8,7 @@ using RapidPay.Domain.Exceptions;
 using System;
 using System.Diagnostics;
 using System.Net;
+using System.Net.Mime;
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
 
@@ -24,34 +25,38 @@ namespace RapidPay.Api.Filters
             _logger = logger;
             _env = env;
         }
+
+        private readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions { WriteIndented = true };
+
         public void OnException(ExceptionContext context)
         {
-
             if (context.Exception is CardsManagementException domainException)
             {
                 context.Result = GetBadRequestResultFromException(context, domainException);
-                context.ExceptionHandled = true;
-
                 _logger.LogError(domainException, "Bad Request: " + domainException.GetValidationMessage());
             }
             else
             {
-                ObjectResult objectResult = new ObjectResult("An unhandled exception occurred")
+                var httpResult = new ContentResult()
                 {
+                    Content = "An unhandled exception occurred",
                     StatusCode = (int)HttpStatusCode.InternalServerError
                 };
 
                 if (_env.IsDevelopment())
-                    objectResult.Value = JsonSerializer.Serialize(
+                {
+                    httpResult.ContentType = "application/json";
+                    httpResult.Content = JsonSerializer.Serialize(
                         new
                         {
                             Exception = context.Exception.GetType().Name,
-                            context.Exception.Message,
-                            context.Exception.StackTrace
+                            Message = context.Exception.Message,
+                            StackTrace = context.Exception.StackTrace
                         },
-                        new JsonSerializerOptions { WriteIndented = true });
+                        _jsonOptions);
+                }
 
-                context.Result = objectResult;
+                context.Result = httpResult;
 
                 string errorMessage = "Unhandled exception";
                 if (context.Exception is HttpRequestException httpException)
@@ -59,6 +64,7 @@ namespace RapidPay.Api.Filters
 
                 _logger.LogError(context.Exception, errorMessage);
             }
+            context.ExceptionHandled = true;
         }
 
         private static BadRequestObjectResult GetBadRequestResultFromException(ExceptionContext context, CardsManagementException exception)

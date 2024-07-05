@@ -73,6 +73,8 @@ namespace RapidPay.Api.Framework
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
             {
+                options.DescribeAllParametersInCamelCase();
+
                 // Add JWT auth UI
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -122,7 +124,10 @@ namespace RapidPay.Api.Framework
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(c => 
+                { 
+                    c.DisplayRequestDuration(); 
+                });
             }
 
             app.UseCors("AllowAllOrigins");
