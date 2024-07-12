@@ -1,4 +1,4 @@
-using RapidPay.Cards.Adapters;
+using RapidPay.Cards.Adapters.Fees;
 using RapidPay.Fees.Domain.Mocks;
 using RapidPay.Framework.Api;
 

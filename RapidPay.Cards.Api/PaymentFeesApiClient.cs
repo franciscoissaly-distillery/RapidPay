@@ -1,4 +1,4 @@
-﻿using RapidPay.Cards.Adapters;
+﻿using RapidPay.Cards.Adapters.Fees;
 using RapidPay.Framework.Api.ApiClient;
 using RapidPay.Framework.Api.Authentication;
 

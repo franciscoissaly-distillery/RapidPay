@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34916.146
 MinimumVisualStudioVersion = 10.0.40219.1
-
-
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidPay.Cards.Api", "RapidPay.Cards.Api\RapidPay.Cards.Api.csproj", "{99FE6038-FA91-4FCC-9B66-F2BEABAA5043}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidPay.Cards.Domain", "RapidPay.Cards.Domain\RapidPay.Cards.Domain.csproj", "{1880D120-FB21-467B-8CA2-152F7B9CCCC6}"
@@ -26,7 +24,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidPay.Fees.Api", "RapidP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidPay.Auth.Api", "RapidPay.Auth.Api\RapidPay.Auth.Api.csproj", "{37263426-30CE-408C-A195-74A6364EE769}"
 EndProject
-
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidPay.Framework.Api", "RapidPay.Framework.Api\RapidPay.Framework.Api.csproj", "{FE3C908A-F949-4CF7-BB34-8543ABD3C541}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{A59DC92C-7A72-425D-BC47-2635146536B3}"
@@ -46,6 +43,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fees", "Fees", "{E7F2AE2F-DFC6-4AE2-BBD4-EAF40E9D114E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Auth", "Auth", "{971EA04E-3AEB-4BC8-9ADD-762397F40CF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidPay.Auth.Adapters", "RapidPay.Auth.Adapters\RapidPay.Auth.Adapters.csproj", "{A3C75B4F-819B-42BF-A3CC-7F0FCFFC3361}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +104,10 @@ Global
 		{50F7D9C3-4B99-477A-9EE2-7998FE93A60A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50F7D9C3-4B99-477A-9EE2-7998FE93A60A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50F7D9C3-4B99-477A-9EE2-7998FE93A60A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3C75B4F-819B-42BF-A3CC-7F0FCFFC3361}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3C75B4F-819B-42BF-A3CC-7F0FCFFC3361}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3C75B4F-819B-42BF-A3CC-7F0FCFFC3361}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3C75B4F-819B-42BF-A3CC-7F0FCFFC3361}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -123,6 +126,7 @@ Global
 		{9306F529-8A1F-48E7-9E1A-1E64A49AB052} = {A59DC92C-7A72-425D-BC47-2635146536B3}
 		{A0140781-8D8B-4ECC-9690-496D213C4B09} = {B44D5386-F3C5-40E6-BADC-83B36F3D5A38}
 		{50F7D9C3-4B99-477A-9EE2-7998FE93A60A} = {2FAB6D6D-A978-41E8-A7E2-C10A829E8467}
+		{A3C75B4F-819B-42BF-A3CC-7F0FCFFC3361} = {971EA04E-3AEB-4BC8-9ADD-762397F40CF1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9F316863-EDE2-4B74-AC39-DB1F5861E648}

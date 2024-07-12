@@ -1,4 +1,4 @@
-﻿namespace RapidPay.Cards.Adapters
+﻿namespace RapidPay.Auth.Adapters.Users
 {
     public interface IUsersAdapter
     // Although still not used by the domain core services,

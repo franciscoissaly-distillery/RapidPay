@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RapidPay.Cards.Adapters;
+using RapidPay.Cards.Adapters.Fees;
 using RapidPay.Framework.Api.Controllers;
 
 namespace RapidPay.Fees.Api.Controllers

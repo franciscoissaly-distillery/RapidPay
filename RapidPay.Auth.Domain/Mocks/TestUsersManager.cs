@@ -1,4 +1,4 @@
-﻿using RapidPay.Cards.Adapters;
+﻿using RapidPay.Auth.Adapters.Users;
 
 namespace RapidPay.Auth.Domain.Mocks
 {

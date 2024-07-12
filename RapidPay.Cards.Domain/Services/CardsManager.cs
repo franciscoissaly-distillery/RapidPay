@@ -1,4 +1,4 @@
-﻿using RapidPay.Cards.Adapters;
+﻿using RapidPay.Cards.Adapters.Fees;
 using RapidPay.Cards.Domain.Entities;
 using RapidPay.Cards.Domain.Repository;
 using RapidPay.Domain.Entities;

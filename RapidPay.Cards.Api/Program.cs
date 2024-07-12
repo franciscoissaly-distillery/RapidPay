@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using RapidPay.Cards.Adapters;
+using RapidPay.Cards.Adapters.Fees;
 using RapidPay.Cards.Data.Sql;
 using RapidPay.Cards.Domain.Repository;
 using RapidPay.Cards.Domain.Services;

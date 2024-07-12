@@ -1,4 +1,4 @@
-﻿namespace RapidPay.Cards.Adapters
+﻿namespace RapidPay.Cards.Adapters.Fees
 {
     public interface IPaymentFeesAdapter
     {
