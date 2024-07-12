@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RapidPay.Auth.Api.Logic;
 using RapidPay.Auth.Api.Models;
-using RapidPay.Domain.Adapters;
+using RapidPay.Cards.Adapters;
 
-namespace RapidPay.Api.Auth
+namespace RapidPay.Auth.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

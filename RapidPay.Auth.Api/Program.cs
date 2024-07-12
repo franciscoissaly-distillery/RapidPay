@@ -1,7 +1,7 @@
-using RapidPay.Api.Framework;
 using RapidPay.Auth.Api.Logic;
-using RapidPay.Auth.Mocks;
-using RapidPay.Domain.Adapters;
+using RapidPay.Auth.Domain.Mocks;
+using RapidPay.Cards.Adapters;
+using RapidPay.Framework.Api;
 
 internal class Program
 {
