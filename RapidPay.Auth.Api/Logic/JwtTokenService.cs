@@ -26,7 +26,7 @@ namespace RapidPay.Auth.Api.Logic
                 issuer: _jwtSettings.Issuer,
                 audience: _jwtSettings.Audience,
                 claims: claims,
-                expires: DateTime.Now.AddHours(10), //expires: DateTime.Now.AddMinutes(10),
+                expires: DateTime.UtcNow.AddHours(10), //expires: DateTime.Now.AddMinutes(10),
                 signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

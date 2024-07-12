@@ -6,12 +6,11 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RapidPay.Api.Filters;
 using RapidPay.Api.Framework.Authentication;
-using RapidPay.Domain.Repository;
 using System.Text;
 
 namespace RapidPay.Api.Framework
 {
-    public class RapidWebAPi
+    public class RapidWebApi
     {
         public void ConfigureAndRun(string[] args,
                 Action<IHostApplicationBuilder>? builderConfiguringAction = null,
@@ -124,9 +123,9 @@ namespace RapidPay.Api.Framework
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => 
-                { 
-                    c.DisplayRequestDuration(); 
+                app.UseSwaggerUI(c =>
+                {
+                    c.DisplayRequestDuration();
                 });
             }
 

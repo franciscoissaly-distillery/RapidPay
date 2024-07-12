@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RapidPay.Api.Framework.Controllers;
-using RapidPay.Api.Models;
+using RapidPay.CardsManagement.Api.Controllers;
+using RapidPay.CardsManagement.Api.Models;
 using RapidPay.Domain.Entities;
 using RapidPay.Domain.Services;
 
@@ -25,8 +26,8 @@ namespace RapidPay.Api.Controllers
             if (!existingCards.Any())
                 return NoContent();
 
-            var dtos = _mapper.MapToModel(existingCards);
-            return Ok(dtos);
+            var model = _mapper.MapToModel(existingCards);
+            return Ok(model);
         }
 
 
@@ -35,10 +36,10 @@ namespace RapidPay.Api.Controllers
         {
             var existingCard = await _cardsManager.GetCard(cardNumber);
             if (existingCard == null)
-                return NotFound();
+                return NoContent();
 
-            var dto = _mapper.MapToModel(existingCard);
-            return Ok(dto);
+            var model = _mapper.MapToModel(existingCard);
+            return Ok(model);
         }
 
 
@@ -46,8 +47,8 @@ namespace RapidPay.Api.Controllers
         public async Task<IActionResult> CreateCard([FromBody] CreateCardRequest request)
         {
             Card newCard = await _cardsManager.CreateCard(request.CardNumber);
-            var dto = _mapper.MapToModel(newCard);
-            return CreatedAtAction(nameof(CreateCard), new { cardNumber = newCard.Number }, dto);
+            var model = _mapper.MapToModel(newCard);
+            return CreatedAtAction(nameof(CreateCard), new { cardNumber = newCard.Number }, model);
         }
 
         [HttpGet("{cardNumber}/balance")]
@@ -64,8 +65,8 @@ namespace RapidPay.Api.Controllers
             if (!existingTransactions.Any())
                 return NoContent();
 
-            var dtos = _mapper.MapToModel(existingTransactions);
-            return Ok(dtos);
+            var model = _mapper.MapToModel(existingTransactions);
+            return Ok(model);
         }
 
 
@@ -73,8 +74,16 @@ namespace RapidPay.Api.Controllers
         public async Task<IActionResult> RegisterCardPayment(string cardNumber, [FromBody] CardPaymentRequest request)
         {
             var newPayment = await _cardsManager.RegisterCardPayment(cardNumber, request.Amount);
-            var dto = _mapper.MapToModel(newPayment);
-            return Ok(dto);
+            var model = _mapper.MapToModel(newPayment);
+            return Ok(model);
         }
+
+        [HttpDelete("{cardNumber}")]
+        public async Task<IActionResult> DeleteCard(string cardNumber)
+        {
+            var didDelete = await _cardsManager.DeleteCard(cardNumber);
+            return Ok(didDelete);
+        }
+
     }
 }

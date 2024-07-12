@@ -1,16 +1,11 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RapidPay.Domain.Exceptions;
-using System;
-using System.Diagnostics;
 using System.Net;
-using System.Net.Mime;
 using System.Text.Json;
-using System.Text.Json.Serialization.Metadata;
 
 namespace RapidPay.Api.Filters
 {
@@ -30,10 +25,10 @@ namespace RapidPay.Api.Filters
 
         public void OnException(ExceptionContext context)
         {
-            if (context.Exception is CardsManagementException domainException)
+            if (context.Exception is CardsManagementValidationException validationException)
             {
-                context.Result = GetBadRequestResultFromException(context, domainException);
-                _logger.LogError(domainException, "Bad Request: " + domainException.GetValidationMessage());
+                context.Result = GetInvalidRequestResultFromValidationException(context, validationException);
+                _logger.LogError(validationException, "Invalid Request: " + validationException.GetValidationMessage());
             }
             else
             {
@@ -67,7 +62,7 @@ namespace RapidPay.Api.Filters
             context.ExceptionHandled = true;
         }
 
-        private static BadRequestObjectResult GetBadRequestResultFromException(ExceptionContext context, CardsManagementException exception)
+        private static BadRequestObjectResult GetInvalidRequestResultFromValidationException(ExceptionContext context, CardsManagementValidationException exception)
         {
             context.ModelState.AddModelError(exception.MemberName ?? "Invalid", exception.GetValidationMessage());
 
@@ -76,8 +71,17 @@ namespace RapidPay.Api.Filters
             problem.Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1";
 
             var httpResult = new BadRequestObjectResult(problem);
-            problem.Status = httpResult.StatusCode;
 
+            switch (exception.InvalidCategory)
+            {
+                case InvalidCategoryEnum.UnknownEntity:
+                    httpResult.StatusCode = (int)HttpStatusCode.NotAcceptable;
+                    break;
+                default:
+                    break;
+            }
+
+            problem.Status = httpResult.StatusCode;
             return httpResult;
         }
     }

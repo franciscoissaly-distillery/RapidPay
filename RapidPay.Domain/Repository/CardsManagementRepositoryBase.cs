@@ -64,6 +64,7 @@ namespace RapidPay.Domain.Repository
         protected abstract IQueryable<TEntity> OnGetQueryable<TEntity>()
             where TEntity : class;
 
+
         async protected Task<int> Save<TEntity>(TEntity entity)
             where TEntity : class
         {
@@ -81,6 +82,23 @@ namespace RapidPay.Domain.Repository
         protected abstract int OnSaveAndReturnSavedCount<TEntity>(IEnumerable<TEntity> entities)
             where TEntity : class;
 
+
+        async protected Task<int> Delete<TEntity>(TEntity entity)
+            where TEntity : class
+        {
+            IEnumerable<TEntity> entities = [entity];
+            return await Delete(entities);
+        }
+
+        async protected Task<int> Delete<TEntity>(IEnumerable<TEntity> entities)
+            where TEntity : class
+        {
+            EnsureRepositoryIsInitialized();
+            return await Task.Run(() => OnDeleteAndReturnDeletedCount(entities));
+        }
+
+        protected abstract int OnDeleteAndReturnDeletedCount<TEntity>(IEnumerable<TEntity> entities)
+            where TEntity : class;
 
         async public Task<CardTransactionType?> GetTransactionType(string systemCode)
         {
@@ -132,7 +150,7 @@ namespace RapidPay.Domain.Repository
             IQueryable<CardTransaction> transactions;
 
             if (asOfDate.GetValueOrDefault() == default)
-                asOfDate = DateTime.Now;
+                asOfDate = DateTime.UtcNow;
 
             if (existingCard != null)
             {
@@ -158,6 +176,17 @@ namespace RapidPay.Domain.Repository
             if (card != null)
             {
                 int updatedRecords = await Save(card);
+                success = updatedRecords > 0;
+            }
+            return success;
+        }
+
+        async public Task<bool> DeleteCard(Card card)
+        {
+            bool success = false;
+            if (card != null)
+            {
+                int updatedRecords = await Delete(card);
                 success = updatedRecords > 0;
             }
             return success;

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using RapidPay.Api.Framework.Controllers;
 using RapidPay.Domain.Adapters;
 
@@ -9,7 +8,7 @@ namespace RapidPay.FeesManagement.Api.Controllers
     {
         private readonly IPaymentFeesAdapter _paymentFeesManager;
 
-        public PaymentFeesController(IPaymentFeesAdapter paymentFeesManager) 
+        public PaymentFeesController(IPaymentFeesAdapter paymentFeesManager)
         {
             _paymentFeesManager = paymentFeesManager;
         }

@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RapidPay.Api.Framework\RapidPay.Api.Framework.csproj" />
+    <ProjectReference Include="..\RapidPay.Auth.Api.Models\RapidPay.Auth.Api.Models.csproj" />
     <ProjectReference Include="..\RapidPay.Auth\RapidPay.Users.csproj" />
   </ItemGroup>
 

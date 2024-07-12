@@ -1,19 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using RapidPay.Api.Framework;
-using RapidPay.Api.Framework.Authentication;
 using RapidPay.DataAccess.Sql;
 using RapidPay.Domain.Adapters;
 using RapidPay.Domain.Repository;
 using RapidPay.Domain.Services;
-using RapidPay.Fees.Mocks;
-using System.Net.Http.Headers;
 using System.Reflection;
 
 internal class Program
 {
     private static void Main(string[] args)
     {
-        new RapidWebAPi()
+        new RapidWebApi()
             .ConfigureAndRun(args,
                 builderConfiguredAction: builder =>
                 {

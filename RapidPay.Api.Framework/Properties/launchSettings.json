@@ -1,12 +1,12 @@
-{
-  "profiles": {
-    "RapidPay.Api.Framework": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "https://localhost:52522;http://localhost:52523"
-    }
-  }
-}
+//{
+//  "profiles": {
+//    "RapidPay.Api.Framework": {
+//      "commandName": "Project",
+//      "launchBrowser": true,
+//      "environmentVariables": {
+//        "ASPNETCORE_ENVIRONMENT": "Development"
+//      },
+//      "applicationUrl": "https://localhost:52522;http://localhost:52523"
+//    }
+//  }
+//}

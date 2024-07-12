@@ -1,6 +1,4 @@
-﻿using RapidPay.Domain.Entities;
-
-namespace RapidPay.Domain.Adapters
+﻿namespace RapidPay.Domain.Adapters
 {
     public interface IPaymentFeesAdapter
     {

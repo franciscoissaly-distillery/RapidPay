@@ -1,10 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RapidPay.Api.Framework.Authentication
 {
@@ -19,7 +14,7 @@ namespace RapidPay.Api.Framework.Authentication
 
         public async Task InvokeAsync(HttpContext context, IAuthTokenProvider tokenProvider)
         {
-            if (context.User.Identity is not null 
+            if (context.User.Identity is not null
                 && context.User.Identity.IsAuthenticated)
             {
                 var token = await context.GetTokenAsync("access_token");

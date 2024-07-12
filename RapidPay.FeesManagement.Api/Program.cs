@@ -6,7 +6,7 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        new RapidWebAPi()
+        new RapidWebApi()
            .ConfigureAndRun(
                args,
                builder =>

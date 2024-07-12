@@ -3,16 +3,16 @@
 namespace RapidPay.Domain.Exceptions
 {
     [Serializable]
-    public class CardsManagementException : Exception
+    public class CardsManagementValidationException : Exception
     {
         public string? MemberName { get; set; }
         public string? ValueText { get; set; }
+        public InvalidCategoryEnum InvalidCategory { get; set; }
 
-
-        public CardsManagementException(string? message) : base(message)
+        public CardsManagementValidationException(string? message) : base(message)
         { }
 
-        public CardsManagementException(string? message, Exception? innerException) : base(message, innerException)
+        public CardsManagementValidationException(string? message, Exception? innerException) : base(message, innerException)
         { }
 
         public string GetValidationMessage()

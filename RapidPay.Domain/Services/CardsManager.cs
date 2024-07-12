@@ -22,7 +22,7 @@ namespace RapidPay.Domain.Services
 
         public async Task<decimal> GetCardBalance(string cardNumber, DateTime? asOfDate = default)
         {
-            Card? existingCard = await GetCard(cardNumber);
+            Card? existingCard = await GetExistingCard(cardNumber);
             return await OnGetCardBalance(existingCard, asOfDate);
         }
 
@@ -32,14 +32,21 @@ namespace RapidPay.Domain.Services
             return await _repository.GetBalanceAmountFromLastTransaction(existingCard, asOfDate);
         }
 
-        public async Task<Card> GetCard(string cardNumber)
+        public async Task<Card?> GetCard(string cardNumber)
+        {
+            Card? existingCard = await OnGetCard(cardNumber);
+            return existingCard;
+        }
+
+        public async Task<Card> GetExistingCard(string cardNumber)
         {
             Card? existingCard = await OnGetCard(cardNumber);
             if (existingCard == null)
-                throw new CardsManagementException("Unknown card number")
+                throw new CardsManagementValidationException("Unknown card number")
                 {
                     MemberName = nameof(cardNumber),
-                    ValueText = cardNumber
+                    ValueText = cardNumber,
+                    InvalidCategory = InvalidCategoryEnum.UnknownEntity
                 };
 
             return existingCard;
@@ -48,7 +55,7 @@ namespace RapidPay.Domain.Services
         private async Task<Card?> OnGetCard(string cardNumber)
         {
             if (!IsValidCardNumber(cardNumber))
-                throw new CardsManagementException("Invalid card number. Expecting 15 digits")
+                throw new CardsManagementValidationException("Invalid card number. Expecting 15 digits")
                 {
                     MemberName = nameof(cardNumber),
                     ValueText = cardNumber
@@ -68,7 +75,7 @@ namespace RapidPay.Domain.Services
         {
             Card? existingCard = await OnGetCard(cardNumber);
             if (existingCard != null)
-                throw new CardsManagementException("Card number already in use")
+                throw new CardsManagementValidationException("Card number already in use")
                 {
                     MemberName = nameof(cardNumber),
                     ValueText = cardNumber
@@ -91,19 +98,19 @@ namespace RapidPay.Domain.Services
             ArgumentNullException.ThrowIfNull(transactionType);
 
             if (paymentAmount < 0)
-                throw new CardsManagementException("Invalid negative payment amount")
+                throw new CardsManagementValidationException("Invalid negative payment amount")
                 {
                     MemberName = nameof(paymentAmount),
                     ValueText = paymentAmount.ToString()
                 };
 
-            Card existingCard = await GetCard(cardNumber);
+            Card existingCard = await GetExistingCard(cardNumber);
             var currentBalance = await OnGetCardBalance(existingCard);
 
             var newPayment = new CardTransaction(existingCard)
             {
                 TransactionType = transactionType,
-                TransactionDate = DateTime.Now,
+                TransactionDate = DateTime.UtcNow,
                 TransactionAmount = paymentAmount,
             };
 
@@ -124,7 +131,7 @@ namespace RapidPay.Domain.Services
         {
             var newBalance = currentBalance;
             if (newPayment != null)
-                newBalance += (newPayment.TransactionAmount + newPayment.FeeAmount) * newPayment.TransactionType.Sign;
+                newBalance += Math.Round((newPayment.TransactionAmount + newPayment.FeeAmount) * newPayment.TransactionType.Sign, 2);
             return newBalance;
         }
 
@@ -135,8 +142,14 @@ namespace RapidPay.Domain.Services
 
         public async Task<IEnumerable<CardTransaction>> GetCardTransactions(string cardNumber)
         {
-            Card existingCard = await GetCard(cardNumber);
+            Card existingCard = await GetExistingCard(cardNumber);
             return await _repository.GetAllCardTransactions(existingCard);
+        }
+
+        public async Task<bool> DeleteCard(string cardNumber)
+        {
+            Card existingCard = await GetExistingCard(cardNumber);
+            return await _repository.DeleteCard(existingCard);
         }
     }
 }

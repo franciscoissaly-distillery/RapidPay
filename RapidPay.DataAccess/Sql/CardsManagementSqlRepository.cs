@@ -42,6 +42,15 @@ namespace RapidPay.DataAccess.Sql
             return updatedRecords;
         }
 
+        protected override int OnDeleteAndReturnDeletedCount<TEntity>(IEnumerable<TEntity> entities)
+            where TEntity : class
+        {
+            _db.Set<TEntity>().RemoveRange(entities);
+            int updatedRecords = _db.SaveChanges();
+            return updatedRecords;
+        }
+
+
         protected override CardTransactionType? OnGetTransactionType(string systemCode)
         {
             return _db.Set<CardTransactionType>().Find(systemCode);

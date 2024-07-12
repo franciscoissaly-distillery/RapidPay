@@ -1,6 +1,7 @@
-﻿using RapidPay.Domain.Entities;
+﻿using RapidPay.CardsManagement.Api.Models;
+using RapidPay.Domain.Entities;
 
-namespace RapidPay.Api.Models
+namespace RapidPay.CardsManagement.Api.Controllers
 {
     public class ModelsMapper
     {

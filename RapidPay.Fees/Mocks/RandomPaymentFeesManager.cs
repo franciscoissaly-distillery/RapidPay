@@ -1,5 +1,4 @@
 ﻿using RapidPay.Domain.Adapters;
-using RapidPay.Domain.Entities;
 
 namespace RapidPay.Fees.Mocks
 {
@@ -41,7 +40,7 @@ namespace RapidPay.Fees.Mocks
                 lock (this)
                 {
                     decimal feeFactor = GetCurrentFeeFactor();
-                    decimal newFee = feeFactor * _lastFeeAmount;
+                    decimal newFee = Math.Round(_lastFeeAmount * feeFactor, 2);
                     _lastFeeAmount = newFee;
                     return newFee;
                 }
@@ -50,9 +49,9 @@ namespace RapidPay.Fees.Mocks
 
         private decimal GetCurrentFeeFactor()
         {
-            if (IsFeeFactorExpired(DateTime.Now))
+            if (IsFeeFactorExpired(DateTime.UtcNow))
             {
-                _feeFactorExpiration = DateTime.Now.AddHours(1);
+                _feeFactorExpiration = DateTime.UtcNow.AddHours(1);
                 _feeFactor = Convert.ToDecimal(Random.Shared.NextDouble() * 2);
             }
 

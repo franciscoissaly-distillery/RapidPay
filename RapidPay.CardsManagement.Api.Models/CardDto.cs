@@ -1,4 +1,4 @@
-﻿namespace RapidPay.Api.Models
+﻿namespace RapidPay.CardsManagement.Api.Models
 {
     public class CardDto
     {

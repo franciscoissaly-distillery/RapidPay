@@ -5,9 +5,9 @@ using RapidPay.Domain.Adapters;
 public class PaymentFeesApiClient : WebApiClientBase, IPaymentFeesAdapter
 {
     public PaymentFeesApiClient(
-        IHttpClientFactory clientFactory, 
-        IAuthTokenProvider tokenProvider, 
-        IConfiguration configuration) 
+        IHttpClientFactory clientFactory,
+        IAuthTokenProvider tokenProvider,
+        IConfiguration configuration)
         : base(clientFactory, tokenProvider, configuration)
     { }
 
