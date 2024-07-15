@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RapidPay.Cards.Domain\RapidPay.Cards.Domain.csproj" />
+    <ProjectReference Include="..\RapidPay.Cards.Adapters\RapidPay.Cards.Adapters.csproj" />
   </ItemGroup>
 
 </Project>

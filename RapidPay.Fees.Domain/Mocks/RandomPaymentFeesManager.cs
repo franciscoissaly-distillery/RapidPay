@@ -1,4 +1,5 @@
-﻿using RapidPay.Cards.Adapters.Fees;
+﻿
+using RapidPay.Cards.Adapters.Fees;
 
 namespace RapidPay.Fees.Domain.Mocks
 {

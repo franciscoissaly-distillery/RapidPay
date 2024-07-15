@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RapidPay.Auth.Adapters\RapidPay.Auth.Adapters.csproj" />
-    <ProjectReference Include="..\RapidPay.Cards.Domain\RapidPay.Cards.Domain.csproj" />
   </ItemGroup>
 
 </Project>
