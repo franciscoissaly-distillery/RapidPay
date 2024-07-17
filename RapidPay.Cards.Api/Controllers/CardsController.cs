@@ -2,7 +2,9 @@
 using RapidPay.Cards.Api.Models;
 using RapidPay.Cards.Domain.Entities;
 using RapidPay.Cards.Domain.Services;
+using RapidPay.Domain.Entities;
 using RapidPay.Framework.Api.Controllers;
+using RapidPay.Framework.Api.Mapping;
 
 namespace RapidPay.Cards.Api.Controllers
 {
@@ -10,12 +12,13 @@ namespace RapidPay.Cards.Api.Controllers
     public partial class CardsController : RapidPayApiControllerBase
     {
         private ICardsManager _cardsManager;
-        private ModelsMapper _mapper = new();
+        private IModelMapper _mapper;
 
-        public CardsController(ICardsManager cardsManager)
+        public CardsController(ICardsManager cardsManager, IModelMapper mapper)
         {
             ArgumentNullException.ThrowIfNull(cardsManager);
             _cardsManager = cardsManager;
+            this._mapper = mapper;
         }
 
         [HttpGet]
@@ -25,7 +28,7 @@ namespace RapidPay.Cards.Api.Controllers
             if (!existingCards.Any())
                 return NoContent();
 
-            var model = _mapper.MapToModel(existingCards);
+            var model = _mapper.MapTo<CardDto, Card>(existingCards);
             return Ok(model);
         }
 
@@ -37,7 +40,7 @@ namespace RapidPay.Cards.Api.Controllers
             if (existingCard == null)
                 return NoContent();
 
-            var model = _mapper.MapToModel(existingCard);
+            var model = _mapper.MapTo<CardDto, Card>(existingCard);
             return Ok(model);
         }
 
@@ -46,7 +49,7 @@ namespace RapidPay.Cards.Api.Controllers
         public async Task<IActionResult> CreateCard([FromBody] CreateCardRequest request)
         {
             Card newCard = await _cardsManager.CreateCard(request.CardNumber);
-            var model = _mapper.MapToModel(newCard);
+            var model = _mapper.MapTo<CardDto, Card>(newCard);
             return CreatedAtAction(nameof(CreateCard), new { cardNumber = newCard.Number }, model);
         }
 
@@ -64,7 +67,7 @@ namespace RapidPay.Cards.Api.Controllers
             if (!existingTransactions.Any())
                 return NoContent();
 
-            var model = _mapper.MapToModel(existingTransactions);
+            var model = _mapper.MapTo<TransactionDto, CardTransaction>(existingTransactions);
             return Ok(model);
         }
 
@@ -73,7 +76,7 @@ namespace RapidPay.Cards.Api.Controllers
         public async Task<IActionResult> RegisterCardPayment(string cardNumber, [FromBody] CardPaymentRequest request)
         {
             var newPayment = await _cardsManager.RegisterCardPayment(cardNumber, request.Amount);
-            var model = _mapper.MapToModel(newPayment);
+            var model = _mapper.MapTo<TransactionDto, CardTransaction>(newPayment);
             return Ok(model);
         }
 

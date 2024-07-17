@@ -1,9 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using RapidPay.Cards.Adapters.Fees;
+using RapidPay.Cards.Api.Controllers;
 using RapidPay.Cards.Data.Sql;
 using RapidPay.Cards.Domain.Repository;
 using RapidPay.Cards.Domain.Services;
-using RapidPay.Framework.Api;
+using RapidPay.Framework.Api.Mapping;
+using RapidPay.Framework.Api.Setup;
 using System.Reflection;
 
 internal class Program
@@ -32,7 +34,8 @@ internal class Program
                         .AddSingleton<DefaultEntities>()
                         .AddScoped<ICardsRepository, CardsSqlRepository>() //.AddSingleton<ICardsManagementRepository, CardsManagementInMemoryRepository>()
                         .AddTransient<IPaymentFeesAdapter, PaymentFeesApiClient>() //.AddSingleton<IPaymentFeesAdapter>(RandomPaymentFeesManager.Instance)
-                        .AddTransient<ICardsManager, CardsManager>();
+                        .AddTransient<ICardsManager, CardsManager>()
+                        .AddTransient<IModelMapper, CardsModelMapper>();
                 });
     }
 }

@@ -8,7 +8,7 @@ using RapidPay.Framework.Api.Authentication;
 using RapidPay.Framework.Api.Filters;
 using System.Text;
 
-namespace RapidPay.Framework.Api
+namespace RapidPay.Framework.Api.Setup
 {
     public class RapidWebApi
     {

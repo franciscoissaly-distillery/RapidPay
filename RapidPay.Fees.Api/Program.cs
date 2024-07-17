@@ -1,6 +1,6 @@
 using RapidPay.Cards.Adapters.Fees;
 using RapidPay.Fees.Domain.Mocks;
-using RapidPay.Framework.Api;
+using RapidPay.Framework.Api.Setup;
 
 internal class Program
 {
